@@ -1,0 +1,31 @@
+{
+  "name": "nomics-platform",
+  "version": "1.0.0",
+  "description": "Nomics Platform Toolkit",
+  "keywords": [
+    "cryptocurrency",
+    "cryptoasset",
+    "api",
+    "nomics",
+    "bitcoin",
+    "ethereum"
+  ],
+  "files": [
+    "index.js",
+    "lib/*.js",
+    "bin/*.js"
+  ],
+  "bin": {
+    "nomics-platform": "bin/nomics-platform.js"
+  },
+  "main": "index.js",
+  "author": "Nick Gauthier <nrg@nomics.com>",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/nomics-crypto/nomics-platform-node",
+    "type": "git"
+  },
+  "scripts": {
+    "cli": "node bin/nomics-platform.js"
+  }
+}
