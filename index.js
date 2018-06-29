@@ -1,3 +1,3 @@
 module.exports = {
-  CLI: require("./lib/cli")
+  CLI: require('./lib/cli')
 }

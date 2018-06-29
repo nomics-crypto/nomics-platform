@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require("../").CLI(process.argv.slice(2))
+require('../').CLI(process.argv.slice(2))
