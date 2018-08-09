@@ -1,4 +1,4 @@
-# Nomics Platform Toolkit for Node.js
+# Nomics Platform Toolkit
 
 ## Installation
 
