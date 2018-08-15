@@ -108,6 +108,16 @@ Notes:
 * The number of trades returned is up to the exchange's implementation.
 * Returning an empty array signifies there are no newer trades than the given `since` ID.
 
+## `/trades/socket` - Streaming Trades
+
+**Websocket endpoints are not a replacement for a REST endpoint, they may be provided in addition to a REST endpoint to reduce load and latency**
+
+The `/trades/socket` endpoint returns the same information as `trades` but as a realtime streaming data feed implemented as a websocket.
+
+The parameters are the same as `/trades` but without `since` (so just the `market` parameter).
+
+The response is a websocket feed. Trades should be sent individually as a JSON object (not wrapped in an array) in the same format as `/trades`.
+
 ## `/orders` - Historical Orders
 
 **In development**
@@ -115,6 +125,18 @@ Notes:
 The `/orders` endpoint returns orders historically for a given market. It allows Nomics to ingest all orders (filled, cancelled, and open) for all time.
 
 This endpoint is currently in development. If you are interested in integrating your orders will us, please [contact us](https://p.nomics.com/contact/).
+
+## `/orders/socket` - Streaming Orders
+
+**In development**
+
+**Websocket endpoints are not a replacement for a REST endpoint, they may be provided in addition to a REST endpoint to reduce load and latency**
+
+The `/orders/socket` endpoint returns the same information as `/orders` but as a realtime streaming data feed implemented as a websocket.
+
+The parameters are the same as `/orders`.
+
+The response is a websocket feed. Orders should be sent individually as a JSON object (not wrapped in an array) in the same format as `/orders`.
 
 ## `/orders/snapshot` - Current Order Book Snapshot
 
