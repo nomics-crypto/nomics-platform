@@ -128,7 +128,32 @@ The `/orders/snapshot` endpoint returns the current order book for a given marke
 
 ### Response
 
-JSON array of all orders that are currently open for the provided market, with the following properties:
+JSON object of all bids and asks that are currently open for the provided market, with the following properties:
+
+* `bids` **Required** a list of all open bid orders
+* `asks` **Required** as list of all open ask orders
+* `timestamp` **Required** the timestamp this snapshot was created in RFC3339
+
+Each order has the following properties:
+
+* `price` **Required** the price for one unit of the base currency expressed in the quote currency as a string that is parseable to a positive number
+* `amount` **Required** the amount of the base currency available at this price point as a string that is parseable to a positive number
+
+Example:
+
+```json
+{
+    "bids": [
+      {"price": "8123.45678", "amount": "10.00000"}
+    ],
+    "asks": [
+      {"price": "8120.00000", "amount": "5.00000"}
+    ],
+    "timestamp": "2006-01-02T15:04:05.999999999Z07:00"
+}
+```
+
+When returning orders, perform as little aggregation as possible (ideally none) and include as many orders as possible (ideally all).
 
 ## `/candles` - Ticker or OHLCV Candle
 
@@ -139,3 +164,5 @@ The `/candles` endpoint returns open, high, low, close, and volume data for a gi
 It is designed to be compatible with 24 hour tickers present on many exchanges as well as candle data present on some exchanges.
 
 **We highly recommend implementing the `/trades` endpoint instead of the `/candles` endpoint.** The `/candles` endpoint should be used as a last resort if implementing `/trades` is not possible.
+
+**In Development**
