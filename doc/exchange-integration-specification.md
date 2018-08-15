@@ -107,3 +107,35 @@ Notes:
 
 * The number of trades returned is up to the exchange's implementation.
 * Returning an empty array signifies there are no newer trades than the given `since` ID.
+
+## `/orders` - Historical Orders
+
+**In development**
+
+The `/orders` endpoint returns orders historically for a given market. It allows Nomics to ingest all orders (filled, cancelled, and open) for all time.
+
+This endpoint is currently in development. If you are interested in integrating your orders will us, please [contact us](https://p.nomics.com/contact/).
+
+## `/orders/snapshot` - Current Order Book Snapshot
+
+**If you implement `/orders` you do not need to implement `/orders/snapshot`.**
+
+The `/orders/snapshot` endpoint returns the current order book for a given market. It allows Nomics to get a simple snapshot of open orders.
+
+### Parameters
+
+* `market` **Required** A market ID from the `/markets` endpoint
+
+### Response
+
+JSON array of all orders that are currently open for the provided market, with the following properties:
+
+## `/candles` - Ticker or OHLCV Candle
+
+**If you implement `/trades` you do not need to implement `/candles`.**
+
+The `/candles` endpoint returns open, high, low, close, and volume data for a given market in a 24 hour period. It allows Nomics to get a 24 hour picture of a market, as well as a high level historical view when available.
+
+It is designed to be compatible with 24 hour tickers present on many exchanges as well as candle data present on some exchanges.
+
+**We highly recommend implementing the `/trades` endpoint instead of the `/candles` endpoint.** The `/candles` endpoint should be used as a last resort if implementing `/trades` is not possible.
