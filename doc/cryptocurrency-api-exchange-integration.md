@@ -155,7 +155,7 @@ Example:
 
 When returning orders, perform as little aggregation as possible (ideally none) and include as many orders as possible (ideally all).
 
-## `/candles` - Ticker or OHLCV Candle
+## `/candles` - Candles or 24h Ticker
 
 **If you implement `/trades` you do not need to implement `/candles`.**
 
@@ -165,4 +165,20 @@ It is designed to be compatible with 24 hour tickers present on many exchanges a
 
 **We highly recommend implementing the `/trades` endpoint instead of the `/candles` endpoint.** The `/candles` endpoint should be used as a last resort if implementing `/trades` is not possible.
 
-**In Development**
+### Parameters
+
+* `market` **Required** A market ID from the `/markets` endpoint
+
+### Response
+
+JSON array of OHLCV Candles for the given market. If daily candles are available, as many as possible should be returned (preferably to inception). Otherwise, a sliding 24 hour ticker should be returned as the only "candle". Candles have the following properties:
+
+* `timestamp` **Required** timestamp of the candle in RFC3339
+* `close` **Required** close price of the asset in the quote currency as a string parseable to a positive number
+* `open` open price of the asset in the quote currency as a string parseable to a positive number
+* `high` highest price of the asset in the quote currency as a string parseable to a positive number
+* `low` lowest price of the asset in the quote currency as a string parseable to a positive number
+* `volume` volume of the asset in the base currency as a string parseable to a positive number
+* `vwap` volume weighted average price of the asset in the quote currency as a string parseable to a positive number
+
+Only `timestamp` and `close` are required so that this endpoint is compatible with as many existing APIs as possible. However, we strongly recommend including all properties.
