@@ -12,4 +12,4 @@ npx nomics-platform audit https://path-to-your-api-root
 
 ## Nomics Integration Specifications
 
-* [Exchange Integration Specification](doc/exchange-integration-specification.md)
+* [Cryptocurrency API Exchange Integration Specification](doc/cryptocurrency-api-exchange-integration.md)
