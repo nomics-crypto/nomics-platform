@@ -2,7 +2,16 @@
 
 The following section describes the API that an exchange must implement in order to integrate with the Nomics platform. From the root of your API, you must implement the following endpoints.
 
-## `/info` - Exchange Information
+## What do I need to implement?
+
+There are many endpoints in this spec, and not all of them are required. They are marked with one of the following:
+
+* Required: This endpoint **must** be implemented in order for Nomics to integrate.
+* Preferred: This endpoint is the simplest and provides the highest quality data to Nomics.
+* Optional: While not required, this endpoint adds extra information or reduces load or latency.
+* Discouraged: This endpoint is present for maximum compatibility, but Preferred endpoints should be implemented whenever possible.
+
+## `/info` - Exchange Information - **Required**
 
 The `/info` endpoint returns information about the exchange as a whole, and is used by Nomics to display information about your exchange to users.
 
@@ -32,7 +41,7 @@ Example:
 }
 ```
 
-## `/markets` - Available Markets
+## `/markets` - Available Markets - **Required**
 
 The `/markets` endpoint returns a list of all available markets on your exchange and is used to query other endpoints on your API.
 
@@ -64,7 +73,7 @@ Example:
 ]
 ```
 
-## `/trades` - Historical Executed Trades
+## `/trades` - Historical Executed Trades - **Preferred**
 
 The `/trades` endpoint returns executed trades historically for a given market (provided via parameters). It allows Nomics to ingest all trades from your exchange for all time.
 
@@ -108,7 +117,7 @@ Notes:
 * The number of trades returned is up to the exchange's implementation.
 * Returning an empty array signifies there are no newer trades than the given `since` ID.
 
-## `/trades/socket` - Streaming Trades
+## `/trades/socket` - Streaming Trades - **Optional**
 
 **Websocket endpoints are not a replacement for a REST endpoint, they may be provided in addition to a REST endpoint to reduce load and latency**
 
@@ -118,7 +127,7 @@ The parameters are the same as `/trades` but without `since` (so just the `marke
 
 The response is a websocket feed. Trades should be sent individually as a JSON object (not wrapped in an array) in the same format as `/trades`.
 
-## `/orders` - Historical Orders
+## `/orders` - Historical Orders - **Preferred**
 
 **In development**
 
@@ -126,7 +135,7 @@ The `/orders` endpoint returns orders historically for a given market. It allows
 
 This endpoint is currently in development. If you are interested in integrating your orders will us, please [contact us](https://p.nomics.com/contact/).
 
-## `/orders/socket` - Streaming Orders
+## `/orders/socket` - Streaming Orders - **Optional**
 
 **In development**
 
@@ -138,7 +147,7 @@ The parameters are the same as `/orders`.
 
 The response is a websocket feed. Orders should be sent individually as a JSON object (not wrapped in an array) in the same format as `/orders`.
 
-## `/orders/snapshot` - Current Order Book Snapshot
+## `/orders/snapshot` - Current Order Book Snapshot - **Discouraged**
 
 **If you implement `/orders` you do not need to implement `/orders/snapshot`.**
 
@@ -177,7 +186,7 @@ Example:
 
 When returning orders, perform as little aggregation as possible (ideally none) and include as many orders as possible (ideally all).
 
-## `/candles` - Candles or 24h Ticker
+## `/candles` - Candles or 24h Ticker - **Discouraged**
 
 **If you implement `/trades` you do not need to implement `/candles`.**
 
