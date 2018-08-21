@@ -169,17 +169,16 @@ Each order has the following properties:
 
 * `price` **Required** the price for one unit of the base currency expressed in the quote currency as a string that is parseable to a positive number
 * `amount` **Required** the amount of the base currency available at this price point as a string that is parseable to a positive number
-* `count` The number of orders that were aggregated to create this row as a positive integer. This is optional and if not present is assumed to be 1.
 
 Example:
 
 ```json
 {
     "bids": [
-      {"price": "8123.45678", "amount": "10.00000", "count": 7}
+      {"price": "8123.45678", "amount": "10.00000"}
     ],
     "asks": [
-      {"price": "8120.00000", "amount": "5.00000", "count": 1}
+      {"price": "8120.00000", "amount": "5.00000"}
     ],
     "timestamp": "2006-01-02T15:04:05.999999999Z07:00"
 }
