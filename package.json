@@ -12,8 +12,8 @@
   ],
   "files": [
     "index.js",
-    "lib/*.js",
-    "bin/*.js"
+    "lib/**/*.js",
+    "bin/**/*.js"
   ],
   "bin": {
     "nomics-platform": "bin/nomics-platform.js"
