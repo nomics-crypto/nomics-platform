@@ -20,7 +20,16 @@ function info (_, res) {
     description: 'Example Exchange is an example of an exchange integration for Nomics.com',
     name: 'Example',
     twitter: 'nomicsfinance',
-    website: 'https://nomics.com'
+    website: 'https://nomics.com',
+    capability: {
+      markets: true,
+      trades: true,
+      tradesSocket: false,
+      orders: false,
+      ordersSocket: false,
+      ordersSnapshot: false,
+      candles: false
+    }
   })
 }
 

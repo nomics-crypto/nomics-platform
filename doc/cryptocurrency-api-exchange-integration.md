@@ -28,6 +28,14 @@ JSON object containing the following properties:
 * `logo`: A URL to your exchange's logo. It should be an SVG or a 500x500 PNG
 * `website`: A URL to your exchange
 * `twitter`: Twitter username to your exchange (without @)
+* `capability`: An object describing the endpoints this integration implements. If not provided, false is assumed for all capabilities. It a capability is ommitted, it is assumed false.
+  * `markets`: boolean indicating markets endpoint is implemented
+  * `trades`: boolean indicating trades endpoint is implemented
+  * `tradesSocket`: boolean indicating trades socket endpoint is implemented
+  * `orders`: boolean indicating orders endpoint is implemented
+  * `ordersSocket`: boolean indicating orders socket endpoint is implemented
+  * `ordersSnapshot`: boolean indicating orders snapshot endpoint is implemented
+  * `candles`: boolean indicating candles endpoint is implemented
 
 Example:
 
@@ -37,7 +45,16 @@ Example:
   "description": "A one paragraph description of the exchange in plain text",
   "logo": "https://example.com/exchange-logo.png",
   "website": "https://example.com",
-  "twitter": "example"
+  "twitter": "example",
+  "capability": {
+    "markets": true,
+    "trades": true,
+    "tradesSocket": false,
+    "orders": false,
+    "ordersSocket": false,
+    "ordersSnapshot": false,
+    "candles": false
+  }
 }
 ```
 
