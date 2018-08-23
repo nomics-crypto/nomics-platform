@@ -1,0 +1,81 @@
+const express = require('express')
+
+function Server () {
+  const app = express()
+
+  app.get('/', status)
+  app.get('/info', info)
+  app.get('/markets', markets)
+  app.get('/trades', trades)
+
+  return app
+}
+
+function status (_, res) {
+  res.send('OK')
+}
+
+function info (_, res) {
+  res.send({
+    description: 'Example Exchange is an example of an exchange integration for Nomics.com',
+    name: 'Example',
+    twitter: 'nomicsfinance',
+    website: 'https://nomics.com'
+  })
+}
+
+function markets (_, res) {
+  res.send([{
+    id: 'btc-usd',
+    base: 'BTC',
+    quote: 'USD'
+  }])
+}
+
+const allTrades = [
+  {
+    'id': '1',
+    'timestamp': '2006-01-02T15:04:05.999+07:00',
+    'price': '100.00',
+    'amount': '10.00',
+    'order': '1',
+    'type': 'market',
+    'side': 'buy',
+    'raw': [1, 1136214245, 100.00, 10.00, '1', 'm', 'b']
+  },
+  {
+    'id': '2',
+    'timestamp': '2006-01-02T15:14:05.999+07:00',
+    'price': '98.00',
+    'amount': '1.00',
+    'order': '3',
+    'type': 'market',
+    'side': 'sell',
+    'raw': [2, 1136214255, 98.00, 1.00, '3', 'm', 's']
+  },
+  {
+    'id': '3',
+    'timestamp': '2006-01-02T15:24:05.999+07:00',
+    'price': '101.37',
+    'amount': '3.50',
+    'order': '5',
+    'type': 'limit',
+    'side': 'buy',
+    'raw': [3, 1136214265, 101.37, 3.50, '5', 'l', 'b']
+  }
+]
+
+function trades (req, res) {
+  if (req.query.market !== 'btc-usd') {
+    res.status(404).send({error: 'unknown market'})
+    return
+  }
+  let since = parseInt(req.query.since)
+  if (isNaN(since)) {
+    since = 0
+  }
+  res.send(allTrades.filter((t) => parseInt(t.id) > since))
+}
+
+const instance = Server().listen(process.env.PORT || '3000')
+process.on('SIGINT', () => instance.close())
