@@ -101,7 +101,7 @@ Example:
 [
   {
     "id": "123456789",
-    "timestamp": "2006-01-02T15:04:05.999999999Z07:00",
+    "timestamp": "2006-01-02T15:04:05.999Z",
     "price": "123.45678",
     "amount": "48.75",
     "order": "8afe76fabe8befa",
@@ -165,22 +165,22 @@ JSON object of all bids and asks that are currently open for the provided market
 * `asks` **Required** as list of all open ask orders
 * `timestamp` **Required** the timestamp this snapshot was created in RFC3339
 
-Each order has the following properties:
+Each order is a tuple with the following entries:
 
-* `price` **Required** the price for one unit of the base currency expressed in the quote currency as a string that is parseable to a positive number
-* `amount` **Required** the amount of the base currency available at this price point as a string that is parseable to a positive number
+* `price` **Required** the price for one unit of the base currency expressed in the quote currency as a JSON number
+* `amount` **Required** the amount of the base currency available at this price point as a JSON number
 
 Example:
 
 ```json
 {
     "bids": [
-      {"price": "8123.45678", "amount": "10.00000"}
+      [8123.45678, 10.00000]
     ],
     "asks": [
-      {"price": "8120.00000", "amount": "5.00000"}
+      [8120.00000, 5.00000]
     ],
-    "timestamp": "2006-01-02T15:04:05.999999999Z07:00"
+    "timestamp": "2006-01-02T15:04:05.999Z"
 }
 ```
 
