@@ -1,5 +1,7 @@
 # Nomics Platform
 
+[![Build Status](https://travis-ci.org/nomics-crypto/nomics-platform.svg?branch=master)](https://travis-ci.org/nomics-crypto/nomics-platform)
+
 This repository contains Nomics Integration Specifications as well as an auditing tool to verify compliance with the specification.
 
 ## Auditing
