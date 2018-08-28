@@ -201,6 +201,8 @@ Example:
 }
 ```
 
+Bids **must be sorted in descending order** and asks **must be sorted in ascending order**. This means the first bid is the best bid and the first ask is the best ask.
+
 When returning orders, perform as little aggregation as possible (ideally none) and include as many orders as possible (ideally all).
 
 ## `/candles` - Candles or 24h Ticker - **Discouraged**

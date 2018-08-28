@@ -7,6 +7,7 @@ function Server () {
   app.get('/info', info)
   app.get('/markets', markets)
   app.get('/trades', trades)
+  app.get('/orders/snapshot', ordersSnapshot)
 
   return app
 }
@@ -27,7 +28,7 @@ function info (_, res) {
       tradesSocket: false,
       orders: false,
       ordersSocket: false,
-      ordersSnapshot: false,
+      ordersSnapshot: true,
       candles: false
     }
   })
@@ -84,6 +85,24 @@ function trades (req, res) {
     since = 0
   }
   res.send(allTrades.filter((t) => parseInt(t.id) > since))
+}
+
+function ordersSnapshot (req, res) {
+  if (req.query.market !== 'btc-usd') {
+    res.status(404).send({error: 'unknown market'})
+    return
+  }
+  res.send({
+    bids: [
+      [5000.00, 1.00],
+      [4900.00, 10.00]
+    ],
+    asks: [
+      [5100.00, 5.00],
+      [5150.00, 10.00]
+    ],
+    timestamp: new Date()
+  })
 }
 
 const instance = Server().listen(process.env.PORT || '3000')
