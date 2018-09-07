@@ -31,6 +31,7 @@ JSON object containing the following properties:
 * `capability`: An object describing the endpoints this integration implements. If not provided, false is assumed for all capabilities. It a capability is ommitted, it is assumed false.
   * `markets`: boolean indicating markets endpoint is implemented
   * `trades`: boolean indicating trades endpoint is implemented
+  * `tradesByTimestamp`: boolean indicating trades by timestamp endpoint is implemented
   * `tradesSocket`: boolean indicating trades socket endpoint is implemented
   * `orders`: boolean indicating orders endpoint is implemented
   * `ordersSocket`: boolean indicating orders socket endpoint is implemented
@@ -232,3 +233,18 @@ JSON array of OHLCV Candles for the given market. If daily candles are available
 * `vwap` volume weighted average price of the asset in the quote currency as a string parseable to a positive number
 
 Only `timestamp` and `close` are required so that this endpoint is compatible with as many existing APIs as possible. However, we strongly recommend including all properties.
+
+## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Discouraged**
+
+The `/trades-by-timestamp` endpoint is nearly identical to the `/trades` endpoint. The core difference is that the `since` parameter is an RFC3339 timestamp instead of an ID. Otherwise, the parameters and response are the same.
+
+This endpoint is provided to maximum compatibility with exchanges that can't paginate trades based on ID. It is inferior to paging by ID because in extremely high volume instances there may be more trades executed at the same timestamp than fit on a single page, causing a gap in trade data. If possible, `/trades` should be used instead.
+
+### Parameters
+
+* `market` **Required** A market ID from the `/markets` endpoint
+* `since` A timestamp from a previous `/trades-by-timestamp` response in RFC3339 format. If none is provided, the oldest trades should be returned
+
+### Response
+
+Same as `/trades`.

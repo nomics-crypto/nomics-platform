@@ -7,6 +7,7 @@ function Server () {
   app.get('/info', info)
   app.get('/markets', markets)
   app.get('/trades', trades)
+  app.get('/trades-by-timestamp', tradesByTimestamp)
   app.get('/orders/snapshot', ordersSnapshot)
 
   return app
@@ -25,6 +26,7 @@ function info (_, res) {
     capability: {
       markets: true,
       trades: true,
+      tradesByTimestamp: true,
       tradesSocket: false,
       orders: false,
       ordersSocket: false,
@@ -85,6 +87,20 @@ function trades (req, res) {
     since = 0
   }
   res.send(allTrades.filter((t) => parseInt(t.id) > since))
+}
+
+function tradesByTimestamp (req, res) {
+  if (req.query.market !== 'btc-usd') {
+    res.status(404).send({error: 'unknown market'})
+    return
+  }
+  let since
+  if (req.query.since) {
+    since = new Date(req.query.since)
+  } else {
+    since = new Date(0)
+  }
+  res.send(allTrades.filter((t) => (new Date(t.timestamp)).getTime() > since.getTime()))
 }
 
 function ordersSnapshot (req, res) {
