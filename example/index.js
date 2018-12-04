@@ -79,7 +79,7 @@ const allTrades = [
 
 function trades (req, res) {
   if (req.query.market !== 'btc-usd') {
-    res.status(404).send({error: 'unknown market'})
+    res.status(404).send({ error: 'unknown market' })
     return
   }
   let since = parseInt(req.query.since)
@@ -91,7 +91,7 @@ function trades (req, res) {
 
 function tradesByTimestamp (req, res) {
   if (req.query.market !== 'btc-usd') {
-    res.status(404).send({error: 'unknown market'})
+    res.status(404).send({ error: 'unknown market' })
     return
   }
   let since
@@ -105,7 +105,7 @@ function tradesByTimestamp (req, res) {
 
 function ordersSnapshot (req, res) {
   if (req.query.market !== 'btc-usd') {
-    res.status(404).send({error: 'unknown market'})
+    res.status(404).send({ error: 'unknown market' })
     return
   }
   res.send({
@@ -121,5 +121,10 @@ function ordersSnapshot (req, res) {
   })
 }
 
-const instance = Server().listen(process.env.PORT || '3000')
-process.on('SIGINT', () => instance.close())
+if (require.main === module) {
+  const instance = Server().listen(process.env.PORT || '3000')
+  process.on('SIGINT', () => instance.close())
+  process.on('SIGTERM', () => instance.close())
+}
+
+module.exports = Server
