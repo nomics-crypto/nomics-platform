@@ -121,5 +121,8 @@ function ordersSnapshot (req, res) {
   })
 }
 
-const instance = Server().listen(process.env.PORT || '3000')
-process.on('SIGINT', () => instance.close())
+if (require.main === module) {
+  const instance = Server().listen(process.env.PORT || '3000')
+  process.on('SIGINT', () => instance.close())
+  process.on('SIGTERM', () => instance.close())
+}
