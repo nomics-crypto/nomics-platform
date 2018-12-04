@@ -9,6 +9,7 @@ function Server () {
   app.get('/trades', trades)
   app.get('/trades-by-timestamp', tradesByTimestamp)
   app.get('/orders/snapshot', ordersSnapshot)
+  app.get('/candles', candles)
 
   return app
 }
@@ -31,7 +32,7 @@ function info (_, res) {
       orders: false,
       ordersSocket: false,
       ordersSnapshot: true,
-      candles: false
+      candles: ['1d', '1h']
     }
   })
 }
@@ -119,6 +120,39 @@ function ordersSnapshot (req, res) {
     ],
     timestamp: new Date()
   })
+}
+
+function candles (req, res) {
+  if (req.query.market !== 'btc-usd') {
+    res.status(404).send({ error: 'unknown market' })
+    return
+  }
+  res.send([
+    {
+      timestamp: '2018-12-02T00:00:00.000Z',
+      open: '4002.8',
+      high: '4119.98',
+      low: '3741.95',
+      close: '4102.8',
+      volume: '19040.84'
+    },
+    {
+      timestamp: '2018-12-03T00:00:00.000Z',
+      open: '4102.8',
+      high: '4119.98',
+      low: '3741.95',
+      close: '3833.47',
+      volume: '17040.84'
+    },
+    {
+      timestamp: '2018-12-04T00:00:00.000Z',
+      open: '3833.47',
+      high: '4035.1',
+      low: '3732.43',
+      close: '3909.3',
+      volume: '13642.42'
+    }
+  ])
 }
 
 if (require.main === module) {
