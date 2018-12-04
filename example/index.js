@@ -79,7 +79,7 @@ const allTrades = [
 
 function trades (req, res) {
   if (req.query.market !== 'btc-usd') {
-    res.status(404).send({error: 'unknown market'})
+    res.status(404).send({ error: 'unknown market' })
     return
   }
   let since = parseInt(req.query.since)
@@ -91,7 +91,7 @@ function trades (req, res) {
 
 function tradesByTimestamp (req, res) {
   if (req.query.market !== 'btc-usd') {
-    res.status(404).send({error: 'unknown market'})
+    res.status(404).send({ error: 'unknown market' })
     return
   }
   let since
@@ -105,7 +105,7 @@ function tradesByTimestamp (req, res) {
 
 function ordersSnapshot (req, res) {
   if (req.query.market !== 'btc-usd') {
-    res.status(404).send({error: 'unknown market'})
+    res.status(404).send({ error: 'unknown market' })
     return
   }
   res.send({
