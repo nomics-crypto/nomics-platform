@@ -28,7 +28,7 @@
   "scripts": {
     "cli": "node bin/nomics-platform.js",
     "lint": "eslint **/*.js",
-    "test": "yarn cli audit \"node ./example/index.js\""
+    "test": "node test.js"
   },
   "devDependencies": {
     "eslint": "^5.0.1",

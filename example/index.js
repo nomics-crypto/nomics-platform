@@ -126,3 +126,5 @@ if (require.main === module) {
   process.on('SIGINT', () => instance.close())
   process.on('SIGTERM', () => instance.close())
 }
+
+module.exports = Server
