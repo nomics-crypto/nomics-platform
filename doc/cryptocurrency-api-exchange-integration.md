@@ -229,7 +229,6 @@ JSON array of OHLCV Candles for the given market and interval. If daily candles 
 - `high` **Required** highest price of the asset in the quote currency as a string parseable to a positive number
 - `low` **Required** lowest price of the asset in the quote currency as a string parseable to a positive number
 - `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
-- `vwap` volume weighted average price of the asset in the quote currency as a string parseable to a positive number
 
 ## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Discouraged**
 
