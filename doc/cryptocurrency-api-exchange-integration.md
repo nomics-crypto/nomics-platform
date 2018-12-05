@@ -206,7 +206,7 @@ Bids **must be sorted in descending order** and asks **must be sorted in ascendi
 
 When returning orders, perform as little aggregation as possible (ideally none) and include as many orders as possible (ideally all).
 
-## `/candles` - Candles - **Optional**
+## `/candles` - Candles - **Discouraged**
 
 **If you implement `/trades` you do not need to implement `/candles`.**
 
@@ -221,9 +221,9 @@ The `/candles` endpoint returns open, high, low, close, and volume data for a gi
 
 ### Response
 
-JSON array of OHLCV Candles for the given market and interval. If daily candles are available, as many as possible should be returned (preferably to inception). Otherwise, a sliding 24 hour, 1 hour, or 1 minute ticker should be returned as the only "candle". Candles have the following properties:
+JSON array of OHLCV Candles for the given market and interval. If daily candles are available, as many as possible should be returned (preferably to inception). Otherwise, a fixed 24 hour, 1 hour, or 1 minute ticker should be returned as the only "candle". Timestamps should be aligned to candle size. IE: Midnight UTC (`2018-01-01T:00:00:00.000Z`) for `1d`, to the hour (`2018-01-01T03:00:00.000Z`) for `1h`, and to the minute (`2018-01-01T03:03:00.000Z`) for `1m`. Candles have the following properties:
 
-- `timestamp` **Required** timestamp of the candle in RFC3339
+- `timestamp` **Required** timestamp of the start of the candle in RFC3339 aligned to candle size in UTC
 - `close` **Required** close price of the asset in the quote currency as a string parseable to a positive number
 - `open` **Required** open price of the asset in the quote currency as a string parseable to a positive number
 - `high` **Required** highest price of the asset in the quote currency as a string parseable to a positive number
