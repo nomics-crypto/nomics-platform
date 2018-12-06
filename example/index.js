@@ -38,43 +38,45 @@ function info (_, res) {
 }
 
 function markets (_, res) {
-  res.send([{
-    id: 'btc-usd',
-    base: 'BTC',
-    quote: 'USD'
-  }])
+  res.send([
+    {
+      id: 'btc-usd',
+      base: 'BTC',
+      quote: 'USD'
+    }
+  ])
 }
 
 const allTrades = [
   {
-    'id': '1',
-    'timestamp': '2006-01-02T15:04:05.999+07:00',
-    'price': '100.00',
-    'amount': '10.00',
-    'order': '1',
-    'type': 'market',
-    'side': 'buy',
-    'raw': [1, 1136214245, 100.00, 10.00, '1', 'm', 'b']
+    id: '1',
+    timestamp: '2006-01-02T15:04:05.999+07:00',
+    price: '100.00',
+    amount: '10.00',
+    order: '1',
+    type: 'market',
+    side: 'buy',
+    raw: [1, 1136214245, 100.0, 10.0, '1', 'm', 'b']
   },
   {
-    'id': '2',
-    'timestamp': '2006-01-02T15:14:05.999+07:00',
-    'price': '98.00',
-    'amount': '1.00',
-    'order': '3',
-    'type': 'market',
-    'side': 'sell',
-    'raw': [2, 1136214255, 98.00, 1.00, '3', 'm', 's']
+    id: '2',
+    timestamp: '2006-01-02T15:14:05.999+07:00',
+    price: '98.00',
+    amount: '1.00',
+    order: '3',
+    type: 'market',
+    side: 'sell',
+    raw: [2, 1136214255, 98.0, 1.0, '3', 'm', 's']
   },
   {
-    'id': '3',
-    'timestamp': '2006-01-02T15:24:05.999+07:00',
-    'price': '101.37',
-    'amount': '3.50',
-    'order': '5',
-    'type': 'limit',
-    'side': 'buy',
-    'raw': [3, 1136214265, 101.37, 3.50, '5', 'l', 'b']
+    id: '3',
+    timestamp: '2006-01-02T15:24:05.999+07:00',
+    price: '101.37',
+    amount: '3.50',
+    order: '5',
+    type: 'limit',
+    side: 'buy',
+    raw: [3, 1136214265, 101.37, 3.5, '5', 'l', 'b']
   }
 ]
 
@@ -87,7 +89,7 @@ function trades (req, res) {
   if (isNaN(since)) {
     since = 0
   }
-  res.send(allTrades.filter((t) => parseInt(t.id) > since))
+  res.send(allTrades.filter(t => parseInt(t.id) > since))
 }
 
 function tradesByTimestamp (req, res) {
@@ -101,7 +103,7 @@ function tradesByTimestamp (req, res) {
   } else {
     since = new Date(0)
   }
-  res.send(allTrades.filter((t) => (new Date(t.timestamp)).getTime() > since.getTime()))
+  res.send(allTrades.filter(t => new Date(t.timestamp).getTime() > since.getTime()))
 }
 
 function ordersSnapshot (req, res) {
@@ -110,14 +112,8 @@ function ordersSnapshot (req, res) {
     return
   }
   res.send({
-    bids: [
-      [5000.00, 1.00],
-      [4900.00, 10.00]
-    ],
-    asks: [
-      [5100.00, 5.00],
-      [5150.00, 10.00]
-    ],
+    bids: [[5000.0, 1.0], [4900.0, 10.0]],
+    asks: [[5100.0, 5.0], [5150.0, 10.0]],
     timestamp: new Date()
   })
 }
@@ -127,9 +123,20 @@ function candles (req, res) {
     res.status(404).send({ error: 'unknown market' })
     return
   }
-  res.send([
+
+  if (!['1d', '1h', '1m'].includes(req.query.interval)) {
+    res.status(404).send({ error: 'unknown interval' })
+    return
+  }
+
+  const timestamps = {
+    '1d': ['2018-12-02T00:00:00.000Z', '2018-12-03T00:00:00.000Z', '2018-12-04T00:00:00.000Z'],
+    '1h': ['2018-12-01T01:00:00.000Z', '2018-12-01T02:00:00.000Z', '2018-12-01T03:00:00.000Z'],
+    '1m': ['2018-12-01T01:01:00.000Z', '2018-12-01T01:01:00.000Z', '2018-12-01T01:01:00.000Z']
+  }
+
+  const data = [
     {
-      timestamp: '2018-12-02T00:00:00.000Z',
       open: '4002.8',
       high: '4119.98',
       low: '3741.95',
@@ -137,7 +144,6 @@ function candles (req, res) {
       volume: '19040.84'
     },
     {
-      timestamp: '2018-12-03T00:00:00.000Z',
       open: '4102.8',
       high: '4119.98',
       low: '3741.95',
@@ -145,14 +151,20 @@ function candles (req, res) {
       volume: '17040.84'
     },
     {
-      timestamp: '2018-12-04T00:00:00.000Z',
       open: '3833.47',
       high: '4035.1',
       low: '3732.43',
       close: '3909.3',
       volume: '13642.42'
     }
-  ])
+  ]
+
+  res.send(
+    data.map((d, i) => {
+      d.timestamp = timestamps[req.query.interval][i]
+      return d
+    })
+  )
 }
 
 if (require.main === module) {
