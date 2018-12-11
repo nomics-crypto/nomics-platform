@@ -230,6 +230,12 @@ JSON array of OHLCV Candles for the given market and interval. If daily candles 
 - `low` **Required** lowest price of the asset in the quote currency as a string parseable to a positive number
 - `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
 
+Candles are expected to include a minimum number of records for a given interval:
+
+- `1d`: 7 candles
+- `1h`: 24 candles
+- `1m`: 60 candles
+
 ## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Discouraged**
 
 The `/trades-by-timestamp` endpoint is nearly identical to the `/trades` endpoint. The core difference is that the `since` parameter is an RFC3339 timestamp instead of an ID. Otherwise, the parameters and response are the same.
