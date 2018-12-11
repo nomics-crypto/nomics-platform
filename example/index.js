@@ -1,4 +1,5 @@
 const express = require('express')
+const moment = require('moment')
 
 function Server () {
   const app = express()
@@ -119,52 +120,49 @@ function ordersSnapshot (req, res) {
 }
 
 function candles (req, res) {
+  const interval = req.query.interval
+
   if (req.query.market !== 'btc-usd') {
     res.status(404).send({ error: 'unknown market' })
     return
   }
 
-  if (!['1d', '1h', '1m'].includes(req.query.interval)) {
+  if (!['1d', '1h', '1m'].includes(interval)) {
     res.status(404).send({ error: 'unknown interval' })
     return
   }
 
-  const timestamps = {
-    '1d': ['2018-12-02T00:00:00.000Z', '2018-12-03T00:00:00.000Z', '2018-12-04T00:00:00.000Z'],
-    '1h': ['2018-12-01T01:00:00.000Z', '2018-12-01T02:00:00.000Z', '2018-12-01T03:00:00.000Z'],
-    '1m': ['2018-12-01T01:01:00.000Z', '2018-12-01T01:01:00.000Z', '2018-12-01T01:01:00.000Z']
+  let count
+  let mInterval
+  let result = []
+
+  if (interval === '1d') {
+    count = 7
+    mInterval = 'day'
+  } else if (interval === '1h') {
+    count = 24
+    mInterval = 'hour'
+  } else {
+    count = 60
+    mInterval = 'minute'
   }
 
-  const data = [
-    {
+  for (let i = 0; i < count; i++) {
+    result[i] = {
+      timestamp: moment()
+        .utc()
+        .subtract(i, mInterval)
+        .startOf(mInterval)
+        .toISOString(),
       open: '4002.8',
       high: '4119.98',
       low: '3741.95',
       close: '4102.8',
       volume: '19040.84'
-    },
-    {
-      open: '4102.8',
-      high: '4119.98',
-      low: '3741.95',
-      close: '3833.47',
-      volume: '17040.84'
-    },
-    {
-      open: '3833.47',
-      high: '4035.1',
-      low: '3732.43',
-      close: '3909.3',
-      volume: '13642.42'
     }
-  ]
+  }
 
-  res.send(
-    data.map((d, i) => {
-      d.timestamp = timestamps[req.query.interval][i]
-      return d
-    })
-  )
+  res.send(result.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1)))
 }
 
 if (require.main === module) {

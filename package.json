@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "moment": "^2.22.2",
     "teenytest": "^5.1.1",
     "teenytest-promise": "^1.0.0"
   }
