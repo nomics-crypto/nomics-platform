@@ -1,5 +1,8 @@
 const express = require('express')
-const moment = require('moment')
+
+const MINUTE = 1000 * 60
+const HOUR = MINUTE * 60
+const DAY = HOUR * 24
 
 function Server () {
   const app = express()
@@ -133,27 +136,26 @@ function candles (req, res) {
   }
 
   let count
-  let mInterval
+  let dInterval
   let result = []
 
   if (interval === '1d') {
     count = 7
-    mInterval = 'day'
+    dInterval = DAY
   } else if (interval === '1h') {
     count = 24
-    mInterval = 'hour'
+    dInterval = HOUR
   } else {
     count = 60
-    mInterval = 'minute'
+    dInterval = MINUTE
   }
 
   for (let i = 0; i < count; i++) {
+    let now = Date.now()
+    let timestamp = new Date(Math.floor((now - dInterval) / dInterval) * dInterval)
+
     result[i] = {
-      timestamp: moment()
-        .utc()
-        .subtract(i, mInterval)
-        .startOf(mInterval)
-        .toISOString(),
+      timestamp,
       open: '4002.8',
       high: '4119.98',
       low: '3741.95',

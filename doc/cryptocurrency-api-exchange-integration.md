@@ -221,7 +221,7 @@ The `/candles` endpoint returns open, high, low, close, and volume data for a gi
 
 ### Response
 
-JSON array of OHLCV Candles for the given market and interval. If daily candles are available, as many as possible should be returned (preferably to inception). Otherwise, candles should be returned fixed 24 hour, 1 hour, or 1 minute intervals. Timestamps should be aligned to candle size. IE: Midnight UTC (`2018-01-01T:00:00:00.000Z`) for `1d`, to the hour (`2018-01-01T03:00:00.000Z`) for `1h`, and to the minute (`2018-01-01T03:03:00.000Z`) for `1m`. Candles should be sorted by timestamp ascending with the last candle being the current "open" candle for the given interval. Candles have the following properties:
+JSON array of OHLCV Candles for the given market and interval. If daily candles are available, as many as possible should be returned (preferably to inception). Otherwise, candles should be returned fixed 24 hour, 1 hour, or 1 minute intervals. Timestamps should be aligned to candle size. IE: Midnight UTC (`2018-01-01T:00:00:00.000Z`) for `1d`, to the hour (`2018-01-01T03:00:00.000Z`) for `1h`, and to the minute (`2018-01-01T03:03:00.000Z`) for `1m`. Candles should be sorted by timestamp ascending. Candles have the following properties:
 
 - `timestamp` **Required** timestamp of the start of the candle in RFC3339 aligned to candle size in UTC
 - `close` **Required** close price of the asset in the quote currency as a string parseable to a positive number
@@ -230,11 +230,11 @@ JSON array of OHLCV Candles for the given market and interval. If daily candles 
 - `low` **Required** lowest price of the asset in the quote currency as a string parseable to a positive number
 - `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
 
-Candles are expected to include a minimum number of records for a given interval:
+Candles are expected to include a minimum number of records for a given interval and to include the "last candle" within the given timeframe:
 
-- `1d`: 7 candles
-- `1h`: 24 candles
-- `1m`: 60 candles
+- `1d`: 7 candles with last candle occuring within a rolling 48 hours
+- `1h`: 24 candles with last candle occuring within a rolling 2 hours
+- `1m`: 60 candles with last candle occurring within a rolling 10 minutes
 
 ## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Discouraged**
 
