@@ -1,5 +1,9 @@
 const express = require('express')
 
+const MINUTE = 1000 * 60
+const HOUR = MINUTE * 60
+const DAY = HOUR * 24
+
 function Server () {
   const app = express()
 
@@ -9,6 +13,7 @@ function Server () {
   app.get('/trades', trades)
   app.get('/trades-by-timestamp', tradesByTimestamp)
   app.get('/orders/snapshot', ordersSnapshot)
+  app.get('/candles', candles)
 
   return app
 }
@@ -31,49 +36,51 @@ function info (_, res) {
       orders: false,
       ordersSocket: false,
       ordersSnapshot: true,
-      candles: false
+      candles: ['1d', '1h']
     }
   })
 }
 
 function markets (_, res) {
-  res.send([{
-    id: 'btc-usd',
-    base: 'BTC',
-    quote: 'USD'
-  }])
+  res.send([
+    {
+      id: 'btc-usd',
+      base: 'BTC',
+      quote: 'USD'
+    }
+  ])
 }
 
 const allTrades = [
   {
-    'id': '1',
-    'timestamp': '2006-01-02T15:04:05.999+07:00',
-    'price': '100.00',
-    'amount': '10.00',
-    'order': '1',
-    'type': 'market',
-    'side': 'buy',
-    'raw': [1, 1136214245, 100.00, 10.00, '1', 'm', 'b']
+    id: '1',
+    timestamp: '2006-01-02T15:04:05.999+07:00',
+    price: '100.00',
+    amount: '10.00',
+    order: '1',
+    type: 'market',
+    side: 'buy',
+    raw: [1, 1136214245, 100.0, 10.0, '1', 'm', 'b']
   },
   {
-    'id': '2',
-    'timestamp': '2006-01-02T15:14:05.999+07:00',
-    'price': '98.00',
-    'amount': '1.00',
-    'order': '3',
-    'type': 'market',
-    'side': 'sell',
-    'raw': [2, 1136214255, 98.00, 1.00, '3', 'm', 's']
+    id: '2',
+    timestamp: '2006-01-02T15:14:05.999+07:00',
+    price: '98.00',
+    amount: '1.00',
+    order: '3',
+    type: 'market',
+    side: 'sell',
+    raw: [2, 1136214255, 98.0, 1.0, '3', 'm', 's']
   },
   {
-    'id': '3',
-    'timestamp': '2006-01-02T15:24:05.999+07:00',
-    'price': '101.37',
-    'amount': '3.50',
-    'order': '5',
-    'type': 'limit',
-    'side': 'buy',
-    'raw': [3, 1136214265, 101.37, 3.50, '5', 'l', 'b']
+    id: '3',
+    timestamp: '2006-01-02T15:24:05.999+07:00',
+    price: '101.37',
+    amount: '3.50',
+    order: '5',
+    type: 'limit',
+    side: 'buy',
+    raw: [3, 1136214265, 101.37, 3.5, '5', 'l', 'b']
   }
 ]
 
@@ -86,7 +93,7 @@ function trades (req, res) {
   if (isNaN(since)) {
     since = 0
   }
-  res.send(allTrades.filter((t) => parseInt(t.id) > since))
+  res.send(allTrades.filter(t => parseInt(t.id) > since))
 }
 
 function tradesByTimestamp (req, res) {
@@ -100,7 +107,7 @@ function tradesByTimestamp (req, res) {
   } else {
     since = new Date(0)
   }
-  res.send(allTrades.filter((t) => (new Date(t.timestamp)).getTime() > since.getTime()))
+  res.send(allTrades.filter(t => new Date(t.timestamp).getTime() > since.getTime()))
 }
 
 function ordersSnapshot (req, res) {
@@ -109,16 +116,55 @@ function ordersSnapshot (req, res) {
     return
   }
   res.send({
-    bids: [
-      [5000.00, 1.00],
-      [4900.00, 10.00]
-    ],
-    asks: [
-      [5100.00, 5.00],
-      [5150.00, 10.00]
-    ],
+    bids: [[5000.0, 1.0], [4900.0, 10.0]],
+    asks: [[5100.0, 5.0], [5150.0, 10.0]],
     timestamp: new Date()
   })
+}
+
+function candles (req, res) {
+  const interval = req.query.interval
+
+  if (req.query.market !== 'btc-usd') {
+    res.status(404).send({ error: 'unknown market' })
+    return
+  }
+
+  if (!['1d', '1h', '1m'].includes(interval)) {
+    res.status(404).send({ error: 'unknown interval' })
+    return
+  }
+
+  let count
+  let dInterval
+  let result = []
+
+  if (interval === '1d') {
+    count = 7
+    dInterval = DAY
+  } else if (interval === '1h') {
+    count = 24
+    dInterval = HOUR
+  } else {
+    count = 60
+    dInterval = MINUTE
+  }
+
+  for (let i = 0; i < count; i++) {
+    let now = Date.now()
+    let timestamp = new Date(Math.floor((now - dInterval) / dInterval) * dInterval)
+
+    result[i] = {
+      timestamp,
+      open: '4002.8',
+      high: '4119.98',
+      low: '3741.95',
+      close: '4102.8',
+      volume: '19040.84'
+    }
+  }
+
+  res.send(result.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1)))
 }
 
 if (require.main === module) {

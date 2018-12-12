@@ -36,7 +36,7 @@ JSON object containing the following properties:
   * `orders`: boolean indicating orders endpoint is implemented
   * `ordersSocket`: boolean indicating orders socket endpoint is implemented
   * `ordersSnapshot`: boolean indicating orders snapshot endpoint is implemented
-  * `candles`: boolean indicating candles endpoint is implemented
+  - `candles`: array indicating which intervals the candles endpoint implements. Valid values are `1d` (required), `1h`, and `1m`.
 
 Example:
 
@@ -54,7 +54,7 @@ Example:
     "orders": false,
     "ordersSocket": false,
     "ordersSnapshot": false,
-    "candles": false
+    "candles": ["1d", "1h"]
   }
 }
 ```
@@ -206,33 +206,35 @@ Bids **must be sorted in descending order** and asks **must be sorted in ascendi
 
 When returning orders, perform as little aggregation as possible (ideally none) and include as many orders as possible (ideally all).
 
-## `/candles` - Candles or 24h Ticker - **Discouraged**
+## `/candles` - Candles - **Discouraged**
 
 **If you implement `/trades` you do not need to implement `/candles`.**
 
-The `/candles` endpoint returns open, high, low, close, and volume data for a given market in a 24 hour period. It allows Nomics to get a 24 hour picture of a market, as well as a high level historical view when available.
-
-It is designed to be compatible with 24 hour tickers present on many exchanges as well as candle data present on some exchanges.
+The `/candles` endpoint returns open, high, low, close, and volume data for a given market in 24 hour, 1 hour, and/or 1 minute periods. It allows Nomics to get at least a 24 hour picture of a market, as well as a high level historical view when available. Implementing this endpoint requires at least the `1d` candle interval with `1h` and `1m` being additionally optional.
 
 **We highly recommend implementing the `/trades` endpoint instead of the `/candles` endpoint.** The `/candles` endpoint should be used as a last resort if implementing `/trades` is not possible.
 
 ### Parameters
 
-* `market` **Required** A market ID from the `/markets` endpoint
+- `market` **Required** A market ID from the `/markets` endpoint.
+- `interval` **Required** The interval of the OHLCV candles. Valid values are `1d` (required), `1h`, and `1m`.
 
 ### Response
 
-JSON array of OHLCV Candles for the given market. If daily candles are available, as many as possible should be returned (preferably to inception). Otherwise, a sliding 24 hour ticker should be returned as the only "candle". Candles have the following properties:
+JSON array of OHLCV Candles for the given market and interval. If daily candles are available, as many as possible should be returned (preferably to inception). Otherwise, candles should be returned fixed 24 hour, 1 hour, or 1 minute intervals. Timestamps should be aligned to candle size. IE: Midnight UTC (`2018-01-01T:00:00:00.000Z`) for `1d`, to the hour (`2018-01-01T03:00:00.000Z`) for `1h`, and to the minute (`2018-01-01T03:03:00.000Z`) for `1m`. Candles should be sorted by timestamp ascending. Candles have the following properties:
 
-* `timestamp` **Required** timestamp of the candle in RFC3339
-* `close` **Required** close price of the asset in the quote currency as a string parseable to a positive number
-* `open` open price of the asset in the quote currency as a string parseable to a positive number
-* `high` highest price of the asset in the quote currency as a string parseable to a positive number
-* `low` lowest price of the asset in the quote currency as a string parseable to a positive number
-* `volume` volume of the asset in the base currency as a string parseable to a positive number
-* `vwap` volume weighted average price of the asset in the quote currency as a string parseable to a positive number
+- `timestamp` **Required** timestamp of the start of the candle in RFC3339 aligned to candle size in UTC
+- `close` **Required** close price of the asset in the quote currency as a string parseable to a positive number
+- `open` **Required** open price of the asset in the quote currency as a string parseable to a positive number
+- `high` **Required** highest price of the asset in the quote currency as a string parseable to a positive number
+- `low` **Required** lowest price of the asset in the quote currency as a string parseable to a positive number
+- `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
 
-Only `timestamp` and `close` are required so that this endpoint is compatible with as many existing APIs as possible. However, we strongly recommend including all properties.
+Candles are expected to include a minimum number of records for a given interval and to include the "last candle" within the given timeframe:
+
+- `1d`: 7 candles with last candle occuring within a rolling 48 hours
+- `1h`: 24 candles with last candle occuring within a rolling 2 hours
+- `1m`: 60 candles with last candle occurring within a rolling 10 minutes
 
 ## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Discouraged**
 
