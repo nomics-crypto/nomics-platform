@@ -236,6 +236,39 @@ Candles are expected to include a minimum number of records for a given interval
 - `1h`: 24 candles with last candle occuring within a rolling 2 hours
 - `1m`: 60 candles with last candle occurring within a rolling 10 minutes
 
+## `/ticker` - Ticker - **Discouraged**
+
+**If you implement `/trades` you do not need to implement `/ticker`.**
+
+The `/ticker` endpoint returns high, low, and last prices and 24h volume data for a given market. It allows Nomics to get a current snapshot of a given market. Implementing this endpoint requires the attributes above in addition to a market symbol and timestamp. Optional attributes include open, bid, and ask prices.
+
+**We highly recommend implementing the `/trades` endpoint instead of the `/ticker` endpoint.** The `/ticker` endpoint should be used as a last resort if implementing `/trades` is not possible.
+
+### Parameters
+
+- `market` **Required** A market ID from the `/markets` endpoint.
+
+### Response
+
+JSON object of the current ticker values for the given market. If daily candles are available, as many as possible should be returned (preferably to inception). Otherwise, candles should be returned fixed 24 hour, 1 hour, or 1 minute intervals. Timestamps should be aligned to candle size. IE: Midnight UTC (`2018-01-01T:00:00:00.000Z`) for `1d`, to the hour (`2018-01-01T03:00:00.000Z`) for `1h`, and to the minute (`2018-01-01T03:03:00.000Z`) for `1m`. Candles should be sorted by timestamp ascending. Candles have the following properties:
+
+- `ask` **Optional** open price of the asset in the quote currency as a string parseable to a positive number
+- `bid` **Optional** open price of the asset in the quote currency as a string parseable to a positive number
+
+- `high` **Required** highest price of the asset in the quote currency as a string parseable to a positive number
+- `low` **Required** lowest price of the asset in the quote currency as a string parseable to a positive number
+- `close` **Required** the current price of the asset in the quote currency as a string parseable to a positive number
+- `timestamp` **Required** timestamp of the current ticker values in RFC3339 in UTC
+- `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
+
+- `raw` **Required**
+
+Candles are expected to include a minimum number of records for a given interval and to include the "last candle" within the given timeframe:
+
+- `1d`: 7 candles with last candle occuring within a rolling 48 hours
+- `1h`: 24 candles with last candle occuring within a rolling 2 hours
+- `1m`: 60 candles with last candle occurring within a rolling 10 minutes
+
 ## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Discouraged**
 
 The `/trades-by-timestamp` endpoint is nearly identical to the `/trades` endpoint. The core difference is that the `since` parameter is an RFC3339 timestamp instead of an ID. Otherwise, the parameters and response are the same.
