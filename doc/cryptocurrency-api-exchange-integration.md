@@ -36,7 +36,7 @@ JSON object containing the following properties:
   * `orders`: boolean indicating orders endpoint is implemented
   * `ordersSocket`: boolean indicating orders socket endpoint is implemented
   * `ordersSnapshot`: boolean indicating orders snapshot endpoint is implemented
-  - `candles`: array indicating which intervals the candles endpoint implements. Valid values are `1d` (required), `1h`, and `1m`.
+  * `candles`: boolean indicating candles endpoint is implemented
 
 Example:
 
@@ -54,7 +54,7 @@ Example:
     "orders": false,
     "ordersSocket": false,
     "ordersSnapshot": false,
-    "candles": ["1d", "1h"]
+    "candles": true
   }
 }
 ```
@@ -217,7 +217,7 @@ The `/candles` endpoint returns open, high, low, close, and volume data for a gi
 ### Parameters
 
 - `market` **Required** A market ID from the `/markets` endpoint.
-- `interval` **Required** The interval of the OHLCV candles. Valid values are `1d` (required), `1h`, and `1m`.
+- `interval` **Required** The interval of the OHLCV candles. Valid values are `1d`, `1h`, and `1m`.
 
 ### Response
 
