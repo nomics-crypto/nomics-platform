@@ -36,7 +36,7 @@ JSON object containing the following properties:
   * `orders`: boolean indicating orders endpoint is implemented
   * `ordersSocket`: boolean indicating orders socket endpoint is implemented
   * `ordersSnapshot`: boolean indicating orders snapshot endpoint is implemented
-  - `candles`: array indicating which intervals the candles endpoint implements. Valid values are `1d` (required), `1h`, and `1m`.
+  * `candles`: boolean indicating candles endpoint is implemented
 
 Example:
 
@@ -54,7 +54,7 @@ Example:
     "orders": false,
     "ordersSocket": false,
     "ordersSnapshot": false,
-    "candles": ["1d", "1h"]
+    "candles": true
   }
 }
 ```
@@ -210,14 +210,14 @@ When returning orders, perform as little aggregation as possible (ideally none) 
 
 **If you implement `/trades` you do not need to implement `/candles`.**
 
-The `/candles` endpoint returns open, high, low, close, and volume data for a given market in 24 hour, 1 hour, and/or 1 minute periods. It allows Nomics to get at least a 24 hour picture of a market, as well as a high level historical view when available. Implementing this endpoint requires at least the `1d` candle interval with `1h` and `1m` being additionally optional.
+The `/candles` endpoint returns open, high, low, close, and volume data for a given market in 24 hour, 1 hour, and 1 minute periods. It allows Nomics to get at least a 24 hour picture of a market, as well as a high level historical view when available. Implementing this endpoint **requires `1d`, `1h`, and `1m` candle intervals**.
 
 **We highly recommend implementing the `/trades` endpoint instead of the `/candles` endpoint.** The `/candles` endpoint should be used as a last resort if implementing `/trades` is not possible.
 
 ### Parameters
 
 - `market` **Required** A market ID from the `/markets` endpoint.
-- `interval` **Required** The interval of the OHLCV candles. Valid values are `1d` (required), `1h`, and `1m`.
+- `interval` **Required** The interval of the OHLCV candles. Valid values are `1d`, `1h`, and `1m`.
 
 ### Response
 
