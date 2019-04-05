@@ -36,7 +36,7 @@ function info (_, res) {
       orders: false,
       ordersSocket: false,
       ordersSnapshot: true,
-      candles: ['1d', '1h']
+      candles: true
     }
   })
 }
