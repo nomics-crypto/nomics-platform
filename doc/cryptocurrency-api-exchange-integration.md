@@ -23,27 +23,29 @@ None
 
 JSON object containing the following properties:
 
-* `name`: **Required** The name of the exchange
-* `description`: A one paragraph description in plain text (no html)
-* `logo`: A URL to your exchange's logo. It should be an SVG or a 500x500 PNG
-* `website`: A URL to your exchange
-* `twitter`: Twitter username to your exchange (without @)
-* `capability`: An object describing the endpoints this integration implements. If not provided, false is assumed for all capabilities. It a capability is ommitted, it is assumed false.
-  * `markets`: boolean indicating markets endpoint is implemented
-  * `trades`: boolean indicating trades endpoint is implemented
-  * `tradesByTimestamp`: boolean indicating trades by timestamp endpoint is implemented
-  * `tradesSocket`: boolean indicating trades socket endpoint is implemented
-  * `orders`: boolean indicating orders endpoint is implemented
-  * `ordersSocket`: boolean indicating orders socket endpoint is implemented
-  * `ordersSnapshot`: boolean indicating orders snapshot endpoint is implemented
-  * `candles`: boolean indicating candles endpoint is implemented
+- `name`: **Required** The name of the exchange
+- `description`: **Required** An exchange description of at least 1000 characters in plain text (no html)
+- `location`: **Required** The primary country the exchange operates from
+- `logo`: **Required** A URL to your exchange's logo. It should be an SVG with a square aspect ratio or a 500x500 PNG
+- `website`: **Required** A URL to your exchange
+- `twitter`: Twitter username to your exchange (without @)
+- `capability`: An object describing the endpoints this integration implements. If not provided, false is assumed for all capabilities. It a capability is ommitted, it is assumed false.
+  - `markets`: boolean indicating markets endpoint is implemented
+  - `trades`: boolean indicating trades endpoint is implemented
+  - `tradesByTimestamp`: boolean indicating trades by timestamp endpoint is implemented
+  - `tradesSocket`: boolean indicating trades socket endpoint is implemented
+  - `orders`: boolean indicating orders endpoint is implemented
+  - `ordersSocket`: boolean indicating orders socket endpoint is implemented
+  - `ordersSnapshot`: boolean indicating orders snapshot endpoint is implemented
+  - `candles`: boolean indicating candles endpoint is implemented
 
 Example:
 
 ```json
 {
   "name": "Exchange Name",
-  "description": "A one paragraph description of the exchange in plain text",
+  "description": "An exchange description of at least 1000 characters in plain text (no html)",
+  "location": "Country Name",
   "logo": "https://example.com/exchange-logo.png",
   "website": "https://example.com",
   "twitter": "example",
