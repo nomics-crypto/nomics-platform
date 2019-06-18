@@ -14,6 +14,7 @@ function Server () {
   app.get('/trades-by-timestamp', tradesByTimestamp)
   app.get('/orders/snapshot', ordersSnapshot)
   app.get('/candles', candles)
+  app.get('/ticker', ticker)
 
   return app
 }
@@ -24,8 +25,11 @@ function status (_, res) {
 
 function info (_, res) {
   res.send({
-    description: 'Example Exchange is an example of an exchange integration for Nomics.com',
+    description:
+      'Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com.',
     name: 'Example',
+    location: 'Example',
+    logo: 'https://nomics.com/logo.png',
     twitter: 'nomicsfinance',
     website: 'https://nomics.com',
     capability: {
@@ -36,7 +40,8 @@ function info (_, res) {
       orders: false,
       ordersSocket: false,
       ordersSnapshot: true,
-      candles: true
+      candles: true,
+      ticker: true
     }
   })
 }
@@ -165,6 +170,21 @@ function candles (req, res) {
   }
 
   res.send(result.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1)))
+}
+
+function ticker (req, res) {
+  if (req.query.market !== 'btc-usd') {
+    res.status(404).send({ error: 'unknown market' })
+    return
+  }
+
+  trade = allTrades[allTrades.length - 1]
+  res.send({
+    close: trade.price,
+    volume: trade.amount,
+    timestamp: trade.timestamp,
+    raw: trade
+  })
 }
 
 if (require.main === module) {

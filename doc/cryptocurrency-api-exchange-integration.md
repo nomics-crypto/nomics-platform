@@ -23,27 +23,29 @@ None
 
 JSON object containing the following properties:
 
-* `name`: **Required** The name of the exchange
-* `description`: A one paragraph description in plain text (no html)
-* `logo`: A URL to your exchange's logo. It should be an SVG or a 500x500 PNG
-* `website`: A URL to your exchange
-* `twitter`: Twitter username to your exchange (without @)
-* `capability`: An object describing the endpoints this integration implements. If not provided, false is assumed for all capabilities. It a capability is ommitted, it is assumed false.
-  * `markets`: boolean indicating markets endpoint is implemented
-  * `trades`: boolean indicating trades endpoint is implemented
-  * `tradesByTimestamp`: boolean indicating trades by timestamp endpoint is implemented
-  * `tradesSocket`: boolean indicating trades socket endpoint is implemented
-  * `orders`: boolean indicating orders endpoint is implemented
-  * `ordersSocket`: boolean indicating orders socket endpoint is implemented
-  * `ordersSnapshot`: boolean indicating orders snapshot endpoint is implemented
-  * `candles`: boolean indicating candles endpoint is implemented
+- `name`: **Required** The name of the exchange
+- `description`: **Required** An exchange description of at least 1000 characters in plain text (no html)
+- `location`: **Required** The primary country the exchange operates from
+- `logo`: **Required** A URL to your exchange's logo. It should be an SVG with a square aspect ratio or a 500x500 PNG
+- `website`: **Required** A URL to your exchange
+- `twitter`: Twitter username to your exchange (without @)
+- `capability`: An object describing the endpoints this integration implements. If not provided, false is assumed for all capabilities. It a capability is ommitted, it is assumed false.
+  - `markets`: boolean indicating markets endpoint is implemented
+  - `trades`: boolean indicating trades endpoint is implemented
+  - `tradesByTimestamp`: boolean indicating trades by timestamp endpoint is implemented
+  - `tradesSocket`: boolean indicating trades socket endpoint is implemented
+  - `orders`: boolean indicating orders endpoint is implemented
+  - `ordersSocket`: boolean indicating orders socket endpoint is implemented
+  - `ordersSnapshot`: boolean indicating orders snapshot endpoint is implemented
+  - `candles`: boolean indicating candles endpoint is implemented
 
 Example:
 
 ```json
 {
   "name": "Exchange Name",
-  "description": "A one paragraph description of the exchange in plain text",
+  "description": "An exchange description of at least 1000 characters in plain text (no html)",
+  "location": "Country Name",
   "logo": "https://example.com/exchange-logo.png",
   "website": "https://example.com",
   "twitter": "example",
@@ -240,7 +242,7 @@ Candles are expected to include a minimum number of records for a given interval
 
 **If you implement `/trades` you do not need to implement `/ticker`.**
 
-The `/ticker` endpoint returns high, low, last prices, and 24h volume data for a given market. It allows Nomics to get a current snapshot of a given market. Implementing this endpoint requires the attributes above in addition to a market symbol and timestamp. Optional attributes include open, bid, and ask prices.
+The `/ticker` endpoint returns last prices (close) and 24h volume data for a given market. It allows Nomics to get a current snapshot of a given market. Implementing this endpoint requires the attributes above in addition to a market symbol and timestamp. Optional attributes include open, high, low, bid, and ask prices.
 
 **We highly recommend implementing the `/trades` endpoint instead of the `/ticker` endpoint.** The `/ticker` endpoint should be used as a last resort if implementing `/trades` is not possible.
 
@@ -252,12 +254,12 @@ The `/ticker` endpoint returns high, low, last prices, and 24h volume data for a
 
 JSON object of the current ticker values for the given market. Tickers have the following properties:
 
-- `high` **Required** highest price of the asset in the quote currency as a string parseable to a positive number
-- `low` **Required** lowest price of the asset in the quote currency as a string parseable to a positive number
 - `close` **Required** the current price of the asset in the quote currency as a string parseable to a positive number
-- `timestamp` **Required** timestamp of the current ticker values in RFC3339 in UTC
 - `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
+- `timestamp` **Required** timestamp of the current ticker values in RFC3339 in UTC
 - `raw` **Required** the raw ticker values as a JSON object
+- `high` **Optional** highest price of the asset in the quote currency as a string parseable to a positive number
+- `low` **Optional** lowest price of the asset in the quote currency as a string parseable to a positive number
 - `ask` **Optional** open price of the asset in the quote currency as a string parseable to a positive number
 - `bid` **Optional** open price of the asset in the quote currency as a string parseable to a positive number
 
