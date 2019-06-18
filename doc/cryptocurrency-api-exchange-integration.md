@@ -242,7 +242,7 @@ Candles are expected to include a minimum number of records for a given interval
 
 **If you implement `/trades` you do not need to implement `/ticker`.**
 
-The `/ticker` endpoint returns high, low, last prices, and 24h volume data for a given market. It allows Nomics to get a current snapshot of a given market. Implementing this endpoint requires the attributes above in addition to a market symbol and timestamp. Optional attributes include open, bid, and ask prices.
+The `/ticker` endpoint returns last prices (close) and 24h volume data for a given market. It allows Nomics to get a current snapshot of a given market. Implementing this endpoint requires the attributes above in addition to a market symbol and timestamp. Optional attributes include open, high, low, bid, and ask prices.
 
 **We highly recommend implementing the `/trades` endpoint instead of the `/ticker` endpoint.** The `/ticker` endpoint should be used as a last resort if implementing `/trades` is not possible.
 
@@ -254,12 +254,12 @@ The `/ticker` endpoint returns high, low, last prices, and 24h volume data for a
 
 JSON object of the current ticker values for the given market. Tickers have the following properties:
 
-- `high` **Required** highest price of the asset in the quote currency as a string parseable to a positive number
-- `low` **Required** lowest price of the asset in the quote currency as a string parseable to a positive number
 - `close` **Required** the current price of the asset in the quote currency as a string parseable to a positive number
-- `timestamp` **Required** timestamp of the current ticker values in RFC3339 in UTC
 - `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
+- `timestamp` **Required** timestamp of the current ticker values in RFC3339 in UTC
 - `raw` **Required** the raw ticker values as a JSON object
+- `high` **Optional** highest price of the asset in the quote currency as a string parseable to a positive number
+- `low` **Optional** lowest price of the asset in the quote currency as a string parseable to a positive number
 - `ask` **Optional** open price of the asset in the quote currency as a string parseable to a positive number
 - `bid` **Optional** open price of the asset in the quote currency as a string parseable to a positive number
 
