@@ -26,7 +26,7 @@ JSON object containing the following properties:
 - `name`: **Required** The name of the exchange
 - `description`: **Required** An exchange description of at least 1000 characters in plain text (no html)
 - `location`: **Required** The primary country the exchange operates from
-- `logo`: **Required** A URL to your exchange's logo. It should be an SVG with a square aspect ratio or a 500x500 PNG
+- `logo`: **Required** A HTTPS URL to your exchange's logo. It should be an SVG with a square aspect ratio or a 500x500 PNG
 - `website`: **Required** A URL to your exchange
 - `twitter`: Twitter username to your exchange (without @)
 - `capability`: An object describing the endpoints this integration implements. If not provided, false is assumed for all capabilities. It a capability is ommitted, it is assumed false.
