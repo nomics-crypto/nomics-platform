@@ -12,6 +12,13 @@ To audit your endpoint, install Node.js and run:
 npx nomics-platform audit https://path-to-your-api-root
 ```
 
+If data functionality needs to be audited prior to all metadata being available, you can use the `NOMICS_PLATFORM_RELAX`
+environment variable to temporarily relax requirements for description length, logo URL, and location.
+
+```bash
+NOMICS_PLATFORM_RELAX=1 npx nomics-platform audit https://path-to-your-api-root
+```
+
 ## Nomics Integration Specifications
 
-* [Cryptocurrency API Exchange Integration Specification](doc/cryptocurrency-api-exchange-integration.md)
+- [Cryptocurrency API Exchange Integration Specification](doc/cryptocurrency-api-exchange-integration.md)
