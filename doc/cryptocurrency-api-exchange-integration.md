@@ -6,10 +6,10 @@ The following section describes the API that an exchange must implement in order
 
 There are many endpoints in this spec, and not all of them are required. They are marked with one of the following:
 
-* Required: This endpoint **must** be implemented in order for Nomics to integrate.
-* Preferred: This endpoint is the simplest and provides the highest quality data to Nomics.
-* Optional: While not required, this endpoint adds extra information or reduces load or latency.
-* Discouraged: This endpoint is present for maximum compatibility, but Preferred endpoints should be implemented whenever possible.
+- Required: This endpoint **must** be implemented in order for Nomics to integrate.
+- Preferred: This endpoint is the simplest and provides the highest quality data to Nomics.
+- Optional: While not required, this endpoint adds extra information or reduces load or latency.
+- Discouraged: This endpoint is present for maximum compatibility, but Preferred endpoints should be implemented whenever possible.
 
 ## `/info` - Exchange Information - **Required**
 
@@ -52,11 +52,9 @@ Example:
   "capability": {
     "markets": true,
     "trades": true,
-    "tradesSocket": false,
-    "orders": false,
-    "ordersSocket": false,
-    "ordersSnapshot": false,
-    "candles": true
+    "ordersSnapshot": true,
+    "candles": false,
+    "ticker": false
   }
 }
 ```
@@ -73,9 +71,9 @@ None
 
 JSON array of objects (one for each market) containing the following properties:
 
-* `id`: **Required** The exchange's ID of the market
-* `base`: **Required** The base currency of the market
-* `quote`: **Required** The quote currency of the market
+- `id`: **Required** The exchange's ID of the market
+- `base`: **Required** The base currency of the market
+- `quote`: **Required** The quote currency of the market
 
 Example:
 
@@ -83,9 +81,10 @@ Example:
 [
   {
     "id": "BTC-USD",
-    "base":"BTC",
+    "base": "BTC",
     "quote": "USD"
-  }, {
+  },
+  {
     "id": "ETH-USDT",
     "base": "ETH",
     "quote": "USDT"
@@ -93,27 +92,27 @@ Example:
 ]
 ```
 
-## `/trades` - Historical Executed Trades - **Preferred**
+## `/trades` - Historical Executed Trades - **Required (Preferred)**
 
 The `/trades` endpoint returns executed trades historically for a given market (provided via parameters). It allows Nomics to ingest all trades from your exchange for all time.
 
 ### Parameters
 
-* `market` **Required** A market ID from the `/markets` endpoint
-* `since` A trade ID from a previous `/trades` response. If none is provided, the oldest trades should be returned
+- `market` **Required** A market ID from the `/markets` endpoint
+- `since` A trade ID from a previous `/trades` response. If none is provided, the oldest trades should be returned
 
 ### Response
 
 JSON array of trade object for the given market after (and not including) the trade ID provided, with the following properties:
 
-* `id` **Required** A string ID for the trade that is unique within the scope of the market
-* `timestamp` **Required** Timestamp of the trade in RFC3339
-* `price` **Required** The price for one unit of the base currency expressed in the quote currency as a string that is parseable to a positive number.
-* `amount` **Required** The amount of the base currency that was traded as a string that is parseable to a positive number.
-* `order` The ID of the order that was executed to produce this trade
-* `type` The type of order that resulted in the trade: [`market`, `limit`]
-* `side` The direction of the trade [`buy`, `sell`]
-* `raw` The raw data of the trade as represented by the exchange. This can be any JSON encodable data.
+- `id` **Required** A string ID for the trade that is unique within the scope of the market
+- `timestamp` **Required** Timestamp of the trade in RFC3339
+- `price` **Required** The price for one unit of the base currency expressed in the quote currency as a string that is parseable to a positive number.
+- `amount` **Required** The amount of the base currency that was traded as a string that is parseable to a positive number.
+- `order` The ID of the order that was executed to produce this trade
+- `type` The type of order that resulted in the trade: [`market`, `limit`]
+- `side` The direction of the trade [`buy`, `sell`]
+- `raw` The raw data of the trade as represented by the exchange. This can be any JSON encodable data.
 
 Example:
 
@@ -134,40 +133,27 @@ Example:
 
 Notes:
 
-* The number of trades returned is up to the exchange's implementation.
-* Returning an empty array signifies there are no newer trades than the given `since` ID.
+- The number of trades returned is up to the exchange's implementation.
+- Returning an empty array signifies there are no newer trades than the given `since` ID.
 
-## `/trades/socket` - Streaming Trades - **Optional**
+## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Required (Discouraged)\***
 
-**Websocket endpoints are not a replacement for a REST endpoint, they may be provided in addition to a REST endpoint to reduce load and latency**
+**If you implement `/trades` you do not need to implement `/trades-by-timestamp`.**
 
-The `/trades/socket` endpoint returns the same information as `trades` but as a realtime streaming data feed implemented as a websocket.
+The `/trades-by-timestamp` endpoint is nearly identical to the `/trades` endpoint. The core difference is that the `since` parameter is an RFC3339 timestamp instead of an ID. Otherwise, the parameters and response are the same.
 
-The parameters are the same as `/trades` but without `since` (so just the `market` parameter).
+This endpoint is provided to maximum compatibility with exchanges that can't paginate trades based on ID. It is inferior to paging by ID because in extremely high volume instances there may be more trades executed at the same timestamp than fit on a single page, causing a gap in trade data. If possible, `/trades` should be used instead.
 
-The response is a websocket feed. Trades should be sent individually as a JSON object (not wrapped in an array) in the same format as `/trades`.
+### Parameters
 
-## `/orders` - Historical Orders - **Preferred**
+- `market` **Required** A market ID from the `/markets` endpoint
+- `since` A timestamp from a previous `/trades-by-timestamp` response in RFC3339 format. If none is provided, the oldest trades should be returned
 
-**In development**
+### Response
 
-The `/orders` endpoint returns orders historically for a given market. It allows Nomics to ingest all orders (filled, cancelled, and open) for all time.
+Same as `/trades`.
 
-This endpoint is currently in development. If you are interested in integrating your orders will us, please [contact us](https://p.nomics.com/contact/).
-
-## `/orders/socket` - Streaming Orders - **Optional**
-
-**In development**
-
-**Websocket endpoints are not a replacement for a REST endpoint, they may be provided in addition to a REST endpoint to reduce load and latency**
-
-The `/orders/socket` endpoint returns the same information as `/orders` but as a realtime streaming data feed implemented as a websocket.
-
-The parameters are the same as `/orders`.
-
-The response is a websocket feed. Orders should be sent individually as a JSON object (not wrapped in an array) in the same format as `/orders`.
-
-## `/orders/snapshot` - Current Order Book Snapshot - **Discouraged**
+## `/orders/snapshot` - Current Order Book Snapshot - **Required**
 
 **If you implement `/orders` you do not need to implement `/orders/snapshot`.**
 
@@ -175,32 +161,28 @@ The `/orders/snapshot` endpoint returns the current order book for a given marke
 
 ### Parameters
 
-* `market` **Required** A market ID from the `/markets` endpoint
+- `market` **Required** A market ID from the `/markets` endpoint
 
 ### Response
 
 JSON object of all bids and asks that are currently open for the provided market, with the following properties:
 
-* `bids` **Required** a list of all open bid orders
-* `asks` **Required** as list of all open ask orders
-* `timestamp` **Required** the timestamp this snapshot was created in RFC3339
+- `bids` **Required** a list of all open bid orders
+- `asks` **Required** as list of all open ask orders
+- `timestamp` **Required** the timestamp this snapshot was created in RFC3339
 
 Each order is a tuple with the following entries:
 
-* `price` **Required** the price for one unit of the base currency expressed in the quote currency as a JSON number
-* `amount` **Required** the amount of the base currency available at this price point as a JSON number
+- `price` **Required** the price for one unit of the base currency expressed in the quote currency as a JSON number
+- `amount` **Required** the amount of the base currency available at this price point as a JSON number
 
 Example:
 
 ```json
 {
-    "bids": [
-      [8123.45678, 10.00000]
-    ],
-    "asks": [
-      [8120.00000, 5.00000]
-    ],
-    "timestamp": "2006-01-02T15:04:05.999Z"
+  "bids": [[8123.45678, 10.0]],
+  "asks": [[8120.0, 5.0]],
+  "timestamp": "2006-01-02T15:04:05.999Z"
 }
 ```
 
@@ -264,18 +246,3 @@ JSON object of the current ticker values for the given market. Tickers have the 
 - `bid` **Optional** open price of the asset in the quote currency as a string parseable to a positive number
 
 Tickers are expected to include the most current data for a given market.
-
-## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Discouraged**
-
-The `/trades-by-timestamp` endpoint is nearly identical to the `/trades` endpoint. The core difference is that the `since` parameter is an RFC3339 timestamp instead of an ID. Otherwise, the parameters and response are the same.
-
-This endpoint is provided to maximum compatibility with exchanges that can't paginate trades based on ID. It is inferior to paging by ID because in extremely high volume instances there may be more trades executed at the same timestamp than fit on a single page, causing a gap in trade data. If possible, `/trades` should be used instead.
-
-### Parameters
-
-* `market` **Required** A market ID from the `/markets` endpoint
-* `since` A timestamp from a previous `/trades-by-timestamp` response in RFC3339 format. If none is provided, the oldest trades should be returned
-
-### Response
-
-Same as `/trades`.
