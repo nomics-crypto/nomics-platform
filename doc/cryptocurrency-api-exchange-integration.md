@@ -136,7 +136,7 @@ Notes:
 - The number of trades returned is up to the exchange's implementation.
 - Returning an empty array signifies there are no newer trades than the given `since` ID.
 
-## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Required (Discouraged)\***
+## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Required (Discouraged)**
 
 **If you implement `/trades` you do not need to implement `/trades-by-timestamp`.**
 
