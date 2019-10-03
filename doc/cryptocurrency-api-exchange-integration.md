@@ -173,8 +173,8 @@ JSON object of all bids and asks that are currently open for the provided market
 
 Each order is a tuple with the following entries:
 
-- `price` **Required** the price for one unit of the base currency expressed in the quote currency as a JSON number
-- `amount` **Required** the amount of the base currency available at this price point as a JSON number
+- `price` **Required** the price for one unit of the base currency expressed in the quote currency as a JSON number or string
+- `amount` **Required** the amount of the base currency available at this price point as a JSON number or string
 
 Example:
 
