@@ -12,6 +12,7 @@ function Server () {
   app.get('/markets', markets)
   app.get('/trades', trades)
   app.get('/trades-by-timestamp', tradesByTimestamp)
+  app.get('/trades/snapshot', tradesSnapshot)
   app.get('/orders/snapshot', ordersSnapshot)
   app.get('/candles', candles)
   app.get('/ticker', ticker)
@@ -36,6 +37,7 @@ function info (_, res) {
       markets: true,
       trades: true,
       tradesByTimestamp: true,
+      tradesSnapshot: true,
       tradesSocket: false,
       orders: false,
       ordersSocket: false,
@@ -101,6 +103,15 @@ function trades (req, res) {
     since = 0
   }
   res.send(allTrades.filter(t => parseInt(t.id) > since))
+}
+
+function tradesSnapshot (req, res) {
+  if (req.query.market !== 'btc-usd') {
+    res.status(404).send({ error: 'unknown market' })
+    return
+  }
+
+  res.send(allTrades)
 }
 
 function tradesByTimestamp (req, res) {
