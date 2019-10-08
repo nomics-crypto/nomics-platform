@@ -51,7 +51,9 @@ function markets (_, res) {
     {
       id: 'btc-usd',
       base: 'BTC',
-      quote: 'USD'
+      quote: 'USD',
+      type: 'spot',
+      active: true
     }
   ])
 }
