@@ -74,7 +74,7 @@ JSON array of objects (one for each market) containing the following properties:
 - `id`: **Required** The exchange's ID of the market
 - `base`: **Required** The base currency of the market
 - `quote`: **Required** The quote currency of the market
-- `type`: **Required** The type the market. Valid values are `spot`, `future`, `option`, `index`, and `derivative` (discouraged).
+- `type`: **Required** The type of the market. Valid values are `spot`, `future`, `option`, and `index`. If the market is a derivative but not an option or future, use `derivative`.
 - `active`: **Required** Boolean representing if the market is currently active
 
 Example:
