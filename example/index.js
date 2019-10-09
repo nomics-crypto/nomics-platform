@@ -12,6 +12,7 @@ function Server () {
   app.get('/markets', markets)
   app.get('/trades', trades)
   app.get('/trades-by-timestamp', tradesByTimestamp)
+  app.get('/trades/snapshot', tradesSnapshot)
   app.get('/orders/snapshot', ordersSnapshot)
   app.get('/candles', candles)
   app.get('/ticker', ticker)
@@ -36,6 +37,7 @@ function info (_, res) {
       markets: true,
       trades: true,
       tradesByTimestamp: true,
+      tradesSnapshot: true,
       tradesSocket: false,
       orders: false,
       ordersSocket: false,
@@ -51,7 +53,9 @@ function markets (_, res) {
     {
       id: 'btc-usd',
       base: 'BTC',
-      quote: 'USD'
+      quote: 'USD',
+      type: 'spot',
+      active: true
     }
   ])
 }
@@ -59,7 +63,7 @@ function markets (_, res) {
 const allTrades = [
   {
     id: '1',
-    timestamp: '2006-01-02T15:04:05.999+07:00',
+    timestamp: '2006-01-02T15:04:05.999Z',
     price: '100.00',
     amount: '10.00',
     order: '1',
@@ -69,7 +73,7 @@ const allTrades = [
   },
   {
     id: '2',
-    timestamp: '2006-01-02T15:14:05.999+07:00',
+    timestamp: '2006-01-02T15:14:05.999Z',
     price: '98.00',
     amount: '1.00',
     order: '3',
@@ -79,7 +83,7 @@ const allTrades = [
   },
   {
     id: '3',
-    timestamp: '2006-01-02T15:24:05.999+07:00',
+    timestamp: '2006-01-02T15:24:05.999Z',
     price: '101.37',
     amount: '3.50',
     order: '5',
@@ -99,6 +103,15 @@ function trades (req, res) {
     since = 0
   }
   res.send(allTrades.filter(t => parseInt(t.id) > since))
+}
+
+function tradesSnapshot (req, res) {
+  if (req.query.market !== 'btc-usd') {
+    res.status(404).send({ error: 'unknown market' })
+    return
+  }
+
+  res.send(allTrades)
 }
 
 function tradesByTimestamp (req, res) {

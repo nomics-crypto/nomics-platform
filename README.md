@@ -13,7 +13,8 @@ npx nomics-platform audit https://path-to-your-api-root
 ```
 
 If data functionality needs to be audited prior to all metadata being available, you can use the `NOMICS_PLATFORM_RELAX`
-environment variable to temporarily relax requirements for description length, logo URL, and location.
+environment variable to temporarily relax requirements for description length, logo URL, and location. This flag will
+also skip checks for markets `type` and `active` flags.
 
 ```bash
 NOMICS_PLATFORM_RELAX=1 npx nomics-platform audit https://path-to-your-api-root
