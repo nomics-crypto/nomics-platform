@@ -74,26 +74,38 @@ JSON array of objects (one for each market) containing the following properties:
 - `id`: **Required** The exchange's ID of the market
 - `base`: **Required** The base currency of the market
 - `quote`: **Required** The quote currency of the market
-- `type`: **Required** The type of the market. Valid values are `spot`, `future`, `option`, and `index`. If the market is a derivative but not an option or future, use `derivative`.
 - `active`: **Required** Boolean representing if the market is currently active
+- `spot`: **Optional** Boolean representing if the market is a spot market
+- `index`: **Optional** Boolean representing if the market is an index. This should only be used to price the underlying index and not for markets on that index. Volume for indexes should always be `1`.
+- `future`: **Optional** Boolean representing if the market is a futures market regardless of underlying assets
+- `option`: **Optional** Boolean representing if the market represents an option regardless of underlying assets
+- `settlement`: **Optional** The settlement currency of the market. Used for derivative markets where the settlement currency may differ from the base or quote currencies.
+- `market_url`: **Optional** The full exchange URL for the market
+- `description`: **Optional** A description of the market
 
 Example:
 
 ```json
 [
   {
-    "id": "BTC-USD",
-    "base": "BTC",
-    "quote": "USD",
-    "type": "spot",
-    "active": true
+    "id": "ETH_BTC",
+    "base": "ETH",
+    "quote": "BTC",
+    "active": true,
+    "spot": true,
+    "market_url": "https://www.binance.com/en/trade/pro/ETH_BTC",
+    "description": "Binance spot markets for ETH to BTC."
   },
   {
-    "id": "ETH-USDT",
-    "base": "ETH",
+    "id": "BTC_USDT",
+    "base": "BTC",
     "quote": "USDT",
-    "type": "future",
-    "active": false
+    "active": true,
+    "spot": false,
+    "future": true,
+    "settlement": "USDT",
+    "market_url": "https://www.binance.com/en/futures/BTCUSDT",
+    "description": "Binance futures markets for BTC to USDT"
   }
 ]
 ```
