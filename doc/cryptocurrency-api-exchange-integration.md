@@ -78,6 +78,7 @@ JSON array of objects (one for each market) containing the following properties:
 - `spot`: **Optional** Boolean representing if the market is a spot market
 - `index`: **Optional** Boolean representing if the market is an index. This should only be used to price the underlying index and not for markets on that index. Volume for indexes should always be `1`.
 - `future`: **Optional** Boolean representing if the market is a futures market regardless of underlying assets
+- `perpetual`: **Optional** Boolean representing if the market is a perpetual futures market regardless of underlying assets
 - `option`: **Optional** Boolean representing if the market represents an option regardless of underlying assets
 - `settlement`: **Optional** The settlement currency of the market. Used for derivative markets where the settlement currency may differ from the base or quote currencies.
 - `market_url`: **Optional** The full exchange URL for the market
@@ -103,6 +104,7 @@ Example:
     "active": true,
     "spot": false,
     "future": true,
+    "perpetual": true,
     "settlement": "USDT",
     "market_url": "https://www.binance.com/en/futures/BTCUSDT",
     "description": "Binance futures markets for BTC to USDT"
