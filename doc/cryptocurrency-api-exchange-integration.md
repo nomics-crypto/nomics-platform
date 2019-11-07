@@ -126,7 +126,8 @@ JSON array of trade object for the given market after (and not including) the tr
 - `id` **Required** A string ID for the trade that is unique within the scope of the market
 - `timestamp` **Required** Timestamp of the trade in RFC3339
 - `price` **Required** The price for one unit of the base currency expressed in the quote currency as a string that is parseable to a positive number.
-- `amount` **Required** The amount of the base currency that was traded as a string that is parseable to a positive number.
+- `amount` **Required** The amount of the **base** currency that was traded as a string that is parseable to a positive number. Only one of `amount` and `quote_amount` are required but both are encouraged.
+- `quote_amount` **Required** The amount of the **quote** currency that was traded as a string that is parseable to a positive number. Only one of `amount` and `quote_amount` are required but both are encouraged.
 - `order` The ID of the order that was executed to produce this trade
 - `type` The type of order that resulted in the trade: [`market`, `limit`]
 - `side` The direction of the trade [`buy`, `sell`]
@@ -230,7 +231,8 @@ JSON array of OHLCV Candles for the given market and interval. If daily candles 
 - `open` **Required** open price of the asset in the quote currency as a string parseable to a positive number
 - `high` **Required** highest price of the asset in the quote currency as a string parseable to a positive number
 - `low` **Required** lowest price of the asset in the quote currency as a string parseable to a positive number
-- `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
+- `volume` **Required** volume of the asset in the **base** currency as a string parseable to a positive number. Only one of `volume` and `volume_quote` are required but both are encouraged.
+- `volume_quote` **Required** volume of the asset in the **quote** currency as a string parseable to a positive number. Only one of `volume` and `volume_quote` are required but both are encouraged.
 
 Candles are expected to include a minimum number of records for a given interval and to include the "last candle" within the given timeframe:
 
@@ -255,7 +257,8 @@ The `/ticker` endpoint returns last prices (close) and 24h volume data for a giv
 JSON object of the current ticker values for the given market. Tickers have the following properties:
 
 - `close` **Required** the current price of the asset in the quote currency as a string parseable to a positive number
-- `volume` **Required** volume of the asset in the base currency as a string parseable to a positive number
+- `volume` **Required** volume of the asset in the **base** currency as a string parseable to a positive number. Only one of `volume` and `volume_quote` are required but both are encouraged.
+- `volume_quote` **Required** volume of the asset in the **quote** currency as a string parseable to a positive number. Only one of `volume` and `volume_quote` are required but both are encouraged.
 - `timestamp` **Required** timestamp of the current ticker values in RFC3339 in UTC
 - `raw` **Required** the raw ticker values as a JSON object
 - `high` **Optional** highest price of the asset in the quote currency as a string parseable to a positive number
