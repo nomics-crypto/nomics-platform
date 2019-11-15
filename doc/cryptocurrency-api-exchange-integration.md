@@ -72,15 +72,27 @@ None
 JSON array of objects (one for each market) containing the following properties:
 
 - `id`: **Required** The exchange's ID of the market
-- `base`: **Required** The base currency of the market
-- `quote`: **Required** The quote currency of the market
+- `base`: **Required** The base asset of the market
+- `base_type`: **Required** The type of the base asset of the market: [`crypto`, `fiat`]
+  - `crypto`: Any cryptocurrency, token, or blockchain asset
+  - `fiat`: Any legal tender backed by central government
+- `quote`: **Required** The quote asset of the market
+- `quote_type`: **Required** The type of the quote asset of the market: [`crypto`, `fiat`]
+  - `crypto`: Any cryptocurrency, token, or blockchain asset
+  - `fiat`: Any legal tender backed by central government
+- `settlement`: **Optional** The settlement asset of the market. Used for derivative markets where the settlement currency may or may not differ from the base or quote currencies.
+- `settlement_type`: **Optional** The type of the settlement asset of the market: [`crypto`, `fiat`]
+  - `crypto`: Any cryptocurrency, token, or blockchain asset
+  - `fiat`: Any legal tender backed by central government
+- `type`: **Required** The type of the market: [`spot`, `derivative`, `index`]
+  - `spot`: If the asset actually being traded is for immediate delivery. This is the most common type of cryptocurrency market.
+  - `derivative`: If the market represents trading activity on any kind of contract or underlying asset. Examples of a derivative market are futures, options, and perpetual markets.
+  - `index`: If the market represents the price of an index directly from its methodology, and it has no order book, or trading activity. This should only be used to price the underlying index and not for markets on that index. Volume for indexes should always be `1`.
+- `subtypes`: **Optional** An array representing additional context for the market type: [`perpetual`, `future`, `option`]
+  - `perpetual`: If the market is a perpetual futures market regardless of underlying assets
+  - `future`: If the market is a futures market regardless of underlying assets
+  - `option`: If the market represents an option regardless of underlying assets
 - `active`: **Required** Boolean representing if the market is currently active
-- `spot`: **Optional** Boolean representing if the market is a spot market
-- `index`: **Optional** Boolean representing if the market is an index. This should only be used to price the underlying index and not for markets on that index. Volume for indexes should always be `1`.
-- `future`: **Optional** Boolean representing if the market is a futures market regardless of underlying assets
-- `perpetual`: **Optional** Boolean representing if the market is a perpetual futures market regardless of underlying assets
-- `option`: **Optional** Boolean representing if the market represents an option regardless of underlying assets
-- `settlement`: **Optional** The settlement currency of the market. Used for derivative markets where the settlement currency may differ from the base or quote currencies.
 - `market_url`: **Optional** The full exchange URL for the market
 - `description`: **Optional** A description of the market
 
@@ -91,23 +103,37 @@ Example:
   {
     "id": "ETH_BTC",
     "base": "ETH",
+    "base_type": "crypto",
     "quote": "BTC",
+    "quote_type": "crypto",
+    "type": "spot",
     "active": true,
-    "spot": true,
     "market_url": "https://www.binance.com/en/trade/pro/ETH_BTC",
-    "description": "Binance spot markets for ETH to BTC."
+    "description": "Binance spot markets for ETH quoted in BTC"
   },
   {
     "id": "BTC_USDT",
     "base": "BTC",
+    "base_type": "crypto",
     "quote": "USDT",
-    "active": true,
-    "spot": false,
-    "future": true,
-    "perpetual": true,
+    "quote_type": "crypto",
     "settlement": "USDT",
+    "settlement_type": "crypto",
+    "type": "derivative",
+    "subtypes": ["perpetual", "future"],
+    "active": true,
     "market_url": "https://www.binance.com/en/futures/BTCUSDT",
-    "description": "Binance futures markets for BTC to USDT"
+    "description": "Binance perpetual futures market for BTC quoted in USDT"
+  },
+  {
+    "id": "in_xrpxbt",
+    "base": "XRP",
+    "base_type": "crypto",
+    "quote": "XBT",
+    "quote_type": "crypto",
+    "type": "index",
+    "active": true,
+    "market_url": "https://www.cfbenchmarks.com/indices/XRP/XBT/RTI/seconds"
   }
 ]
 ```
