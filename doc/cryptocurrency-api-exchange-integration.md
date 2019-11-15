@@ -73,17 +73,22 @@ JSON array of objects (one for each market) containing the following properties:
 
 - `id`: **Required** The exchange's ID of the market
 - `base`: **Required** The base asset of the market
-- `base_type`: **Required** The type of the base asset of the market: [`crypto`, `fiat`]
+- `base_type`: **Required** The type of the base asset: [`crypto`, `fiat`]
   - `crypto`: Any cryptocurrency, token, or blockchain asset
-  - `fiat`: Any legal tender backed by central government
+  - `fiat`: Any legal tender backed by a central government
 - `quote`: **Required** The quote asset of the market
-- `quote_type`: **Required** The type of the quote asset of the market: [`crypto`, `fiat`]
+- `quote_type`: **Required** The type of the quote asset: [`crypto`, `fiat`]
   - `crypto`: Any cryptocurrency, token, or blockchain asset
-  - `fiat`: Any legal tender backed by central government
+  - `fiat`: Any legal tender backed by a central government
 - `settlement`: **Optional** The settlement asset of the market. Used for derivative markets where the settlement currency may or may not differ from the base or quote currencies.
-- `settlement_type`: **Optional** The type of the settlement asset of the market: [`crypto`, `fiat`]
+- `settlement_type`: **Optional** The type of the settlement asset: [`crypto`, `fiat`]
   - `crypto`: Any cryptocurrency, token, or blockchain asset
-  - `fiat`: Any legal tender backed by central government
+  - `fiat`: Any legal tender backed by a central government
+- `underlying`: **Optional** The underlying asset of the market upon which a derivative’s price is based. Used for derivative markets and is typically an index.
+- `underlying_type`: **Optional** The type of the underlying asset: [`crypto`, `fiat`]
+  - `index`: A portfolio or basket of assets used to provide a market price
+  - `crypto`: Any cryptocurrency, token, or blockchain asset
+  - `fiat`: Any legal tender backed by a central government
 - `type`: **Required** The type of the market: [`spot`, `derivative`, `index`]
   - `spot`: If the asset actually being traded is for immediate delivery. This is the most common type of cryptocurrency market.
   - `derivative`: If the market represents trading activity on any kind of contract or underlying asset. Examples of a derivative market are futures, options, and perpetual markets.
