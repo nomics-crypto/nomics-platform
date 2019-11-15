@@ -85,7 +85,7 @@ JSON array of objects (one for each market) containing the following properties:
   - `crypto`: Any cryptocurrency, token, or blockchain asset
   - `fiat`: Any legal tender backed by a central government
 - `underlying`: **Optional** The underlying asset of the market upon which a derivative’s price is based. Used for derivative markets and is typically an index.
-- `underlying_type`: **Optional** The type of the underlying asset: [`crypto`, `fiat`]
+- `underlying_type`: **Optional** The type of the underlying asset: [`index`, `crypto`, `fiat`]
   - `index`: A portfolio or basket of assets used to provide a market price
   - `crypto`: Any cryptocurrency, token, or blockchain asset
   - `fiat`: Any legal tender backed by a central government
