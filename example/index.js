@@ -52,12 +52,15 @@ function markets (_, res) {
   res.send([
     {
       id: 'btc-usd',
+      type: 'derivative',
       base: 'BTC',
+      base_type: 'crypto',
       quote: 'USD',
-      type: 'spot',
-      active: true
-    }
-  ])
+      quote_type: 'fiat',
+      subtypes: ['perpetual', 'future'],
+      active: true,
+    },
+  ]);
 }
 
 const allTrades = [
