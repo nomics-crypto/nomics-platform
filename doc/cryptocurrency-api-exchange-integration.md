@@ -81,31 +81,18 @@ JSON array of objects (one for each market) containing the following properties:
   - `derivative`: If the market represents trading activity on any kind of contract or underlying asset. Examples of a derivative market are futures, options, and perpetual markets.
   - `index`: If the market represents the price of an index directly from its methodology, and it has no order book, or trading activity. This should only be used to price the underlying index and not for markets on that index. Volume for indexes should always be `1`.
 - `base`: The base asset of the market
-- `base_type`: The type of the base asset: [`crypto`, `fiat`]
-  - `crypto`: Any cryptocurrency, token, or blockchain asset
-  - `fiat`: Any legal tender backed by a central government
 - `quote`: The quote asset of the market
-- `quote_type`: The type of the quote asset: [`crypto`, `fiat`]
-  - `crypto`: Any cryptocurrency, token, or blockchain asset
-  - `fiat`: Any legal tender backed by a central government
 - `active`: Boolean representing if the market is currently active
 
 _Optional_:
 
-- `settlement`: The settlement asset of the market. Used for derivative markets where the settlement currency may or may not differ from the base or quote currencies.
-- `settlement_type`: The type of the settlement asset: [`crypto`, `fiat`]
-  - `crypto`: Any cryptocurrency, token, or blockchain asset
-  - `fiat`: Any legal tender backed by a central government
-- `underlying`: The underlying asset of the market upon which a derivative’s price is based. Used for derivative markets and is typically an index.
-- `underlying_type`: The type of the underlying asset: [`index`, `crypto`, `fiat`]
-  - `index`: A portfolio or basket of assets used to provide a market price
-  - `crypto`: Any cryptocurrency, token, or blockchain asset
-  - `fiat`: Any legal tender backed by a central government
 - `subtypes`: An array representing additional context for the given market type. If the `type` is `derivative`, possible values are [`perpetual`, `future`, `option`]. Otherwise, this can be omitted.
   - `derivative`:
     - `perpetual`: If the market is a perpetual futures market regardless of underlying assets
     - `future`: If the market is a futures market regardless of underlying assets
     - `option`: If the market represents an option regardless of underlying assets
+- `settlement`: The settlement asset of the market. Used for derivative markets where the settlement currency may or may not differ from the base or quote currencies.
+- `underlying`: The underlying asset of the market upon which a derivative’s price is based. Used for derivative markets and is typically an index.
 - `market_url`: The full exchange URL for the market
 - `description`: A description of the market
 
@@ -117,9 +104,7 @@ Example:
     "id": "ETH_BTC",
     "type": "spot",
     "base": "ETH",
-    "base_type": "crypto",
     "quote": "BTC",
-    "quote_type": "crypto",
     "active": true,
     "market_url": "https://www.binance.com/en/trade/pro/ETH_BTC",
     "description": "Binance spot markets for ETH quoted in BTC"
@@ -128,13 +113,10 @@ Example:
     "id": "BTC_USDT",
     "type": "derivative",
     "base": "BTC",
-    "base_type": "crypto",
     "quote": "USDT",
-    "quote_type": "crypto",
-    "settlement": "USDT",
-    "settlement_type": "crypto",
-    "subtypes": ["perpetual", "future"],
     "active": true,
+    "subtypes": ["perpetual", "future"],
+    "settlement": "USDT",
     "market_url": "https://www.binance.com/en/futures/BTCUSDT",
     "description": "Binance perpetual futures market for BTC quoted in USDT"
   },
@@ -142,9 +124,7 @@ Example:
     "id": "in_xrpxbt",
     "type": "index",
     "base": "XRP",
-    "base_type": "crypto",
     "quote": "XBT",
-    "quote_type": "crypto",
     "active": true,
     "market_url": "https://www.cfbenchmarks.com/indices/XRP/XBT/RTI/seconds"
   }
