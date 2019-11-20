@@ -31,6 +31,7 @@ JSON object containing the following properties:
 - `logo`: A HTTPS URL to your exchange's logo. It should be an SVG with a square aspect ratio or a 500x500 PNG
 - `website`: A URL to your exchange
 - `twitter`: Twitter username to your exchange (without @)
+- `version`: The Nomics Platform Specification version
 - `capability`: An object describing the endpoints this integration implements. If not provided, false is assumed for all capabilities. It a capability is ommitted, it is assumed false.
   - `markets`: boolean indicating markets endpoint is implemented
   - `trades`: boolean indicating trades endpoint is implemented
@@ -51,6 +52,7 @@ Example:
   "logo": "https://example.com/exchange-logo.png",
   "website": "https://example.com",
   "twitter": "example",
+  "version": "1.0",
   "capability": {
     "markets": true,
     "trades": true,
