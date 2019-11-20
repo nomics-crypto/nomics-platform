@@ -33,6 +33,7 @@ function info (_, res) {
     logo: 'https://nomics.com/logo.png',
     twitter: 'nomicsfinance',
     website: 'https://nomics.com',
+    version: "1.0",
     capability: {
       markets: true,
       trades: true,
@@ -54,9 +55,7 @@ function markets (_, res) {
       id: 'btc-usd',
       type: 'derivative',
       base: 'BTC',
-      base_type: 'crypto',
       quote: 'USD',
-      quote_type: 'fiat',
       subtypes: ['perpetual', 'future'],
       active: true,
     },
