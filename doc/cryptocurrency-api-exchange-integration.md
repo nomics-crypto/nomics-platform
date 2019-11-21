@@ -77,22 +77,24 @@ JSON array of objects (one for each market) containing the following properties:
 
 **Required**:
 
-- `id`: The exchange's ID of the market
-- `type`: The type of the market: [`spot`, `derivative`, `index`]
+- `id`: Your exchange's unique ID of the market as a string.
+- `type`: The type of the market:
   - `spot`: If the asset actually being traded is for immediate delivery. This is the most common type of cryptocurrency market.
   - `derivative`: If the market represents trading activity on any kind of contract or underlying asset. Examples of a derivative market are futures, options, and perpetual markets.
   - `index`: If the market represents the price of an index directly from its methodology, and it has no order book, or trading activity. This should only be used to price the underlying index and not for markets on that index. Volume for indexes should always be `1`.
 - `base`: The base asset of the market
 - `quote`: The quote asset of the market
-- `active`: Boolean representing if the market is currently active
 
 _Optional_:
 
-- `subtypes`: An array representing additional context for the given market type. If the `type` is `derivative`, possible values are [`perpetual`, `future`, `option`]. Otherwise, this can be omitted.
-  - `derivative`:
+- `active`: Boolean representing if the market is currently active. Defaults to `true`.
+- `subtypes`: An array representing additional context based on the market's `type`. Multiple subtypes are allowed.
+  - `type`: `spot`: No subtypes at this time
+  - `type`: `derivative`:
     - `perpetual`: If the market is a perpetual futures market regardless of underlying assets
     - `future`: If the market is a futures market regardless of underlying assets
     - `option`: If the market represents an option regardless of underlying assets
+  - `type`: `index`: No subtypes at this time
 - `settlement`: The settlement asset of the market. Used for derivative markets where the settlement currency may or may not differ from the base or quote currencies.
 - `underlying`: The underlying asset of the market upon which a derivative’s price is based. Used for derivative markets and is typically an index.
 - `market_url`: The full exchange URL for the market
@@ -106,10 +108,7 @@ Example:
     "id": "ETH_BTC",
     "type": "spot",
     "base": "ETH",
-    "quote": "BTC",
-    "active": true,
-    "market_url": "https://www.binance.com/en/trade/pro/ETH_BTC",
-    "description": "Binance spot markets for ETH quoted in BTC"
+    "quote": "BTC"
   },
   {
     "id": "BTC_USDT",
@@ -139,7 +138,7 @@ The `/trades` endpoint returns executed trades historically for a given market (
 
 ### Parameters
 
-- `market` **Required** A market ID from the `/markets` endpoint
+- `market` **Required** Your exchange's market ID from the `/markets` endpoint
 - `since` A trade ID from a previous `/trades` response. If none is provided, the oldest trades should be returned
 
 ### Response
@@ -197,7 +196,7 @@ This endpoint is provided to maximum compatibility with exchanges that can't pag
 
 ### Parameters
 
-- `market` **Required** A market ID from the `/markets` endpoint
+- `market` **Required** Your exchange's market ID from the `/markets` endpoint
 - `since` A timestamp from a previous `/trades-by-timestamp` response in RFC3339 format. If none is provided, the oldest trades should be returned
 
 ### Response
@@ -212,7 +211,7 @@ The `/orders/snapshot` endpoint returns the current order book for a given marke
 
 ### Parameters
 
-- `market` **Required** A market ID from the `/markets` endpoint
+- `market` **Required** Your exchange's market ID from the `/markets` endpoint
 
 ### Response
 
@@ -255,7 +254,7 @@ The `/candles` endpoint returns open, high, low, close, and volume data for a gi
 
 ### Parameters
 
-- `market` **Required** A market ID from the `/markets` endpoint.
+- `market` **Required** Your exchange's market ID from the `/markets` endpoint
 - `interval` **Required** The interval of the OHLCV candles. Valid values are `1d`, `1h`, and `1m`.
 
 ### Response
@@ -291,7 +290,7 @@ The `/ticker` endpoint returns last prices (close) and 24h volume data for a giv
 
 ### Parameters
 
-- `market` **Required** A market ID from the `/markets` endpoint.
+- `market` **Required** Your exchange's market ID from the `/markets` endpoint
 
 ### Response
 
