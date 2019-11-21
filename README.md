@@ -9,7 +9,7 @@ This repository contains Nomics Integration Specifications as well as an auditin
 To audit your endpoint, install Node.js and run:
 
 ```
-npx nomics-platform audit https://path-to-your-api-root
+npx nomics-platform@0.13.8 audit https://path-to-your-api-root
 ```
 
 If data functionality needs to be audited prior to all metadata being available, you can use the `NOMICS_PLATFORM_RELAX`
