@@ -33,6 +33,7 @@ function info (_, res) {
     logo: 'https://nomics.com/logo.png',
     twitter: 'nomicsfinance',
     website: 'https://nomics.com',
+    version: "1.0",
     capability: {
       markets: true,
       trades: true,
@@ -52,12 +53,13 @@ function markets (_, res) {
   res.send([
     {
       id: 'btc-usd',
+      type: 'derivative',
       base: 'BTC',
       quote: 'USD',
-      type: 'spot',
-      active: true
-    }
-  ])
+      subtypes: ['perpetual', 'future'],
+      active: true,
+    },
+  ]);
 }
 
 const allTrades = [
