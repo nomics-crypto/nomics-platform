@@ -148,7 +148,7 @@ JSON array of trade object for the given market after (and not including) the tr
 **Required**:
 
 - `id`: A string ID for the trade that is unique within the scope of the market
-- `timestamp`: Timestamp of the trade in RFC3339
+- `timestamp`: Timestamp of the trade in RFC3339 in UTC
 - `price`: The price for one unit of the base currency expressed in the quote currency as a string that is parseable to a positive number.
 
 One of the following are **required**:
@@ -221,7 +221,7 @@ JSON object of all bids and asks that are currently open for the provided market
 
 - `bids`: a list of all open bid orders
 - `asks`: as list of all open ask orders
-- `timestamp`: the timestamp this snapshot was created in RFC3339
+- `timestamp`: the timestamp this snapshot was created in RFC3339 in UTC
 
 Each order is a tuple with the following entries:
 
