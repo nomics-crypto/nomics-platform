@@ -132,7 +132,7 @@ Example:
 ]
 ```
 
-## `/trades` - Historical Executed Trades - **Required (Preferred)**
+## `/trades` - Historical Executed Trades - **Required for A+ Verified Exchanges**
 
 The `/trades` endpoint returns executed trades historically for a given market (provided via parameters). It allows Nomics to ingest all trades from your exchange for all time.
 
@@ -186,7 +186,7 @@ Notes:
 - The number of trades returned is up to the exchange's implementation.
 - Returning an empty array signifies there are no newer trades than the given `since` ID.
 
-## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Required (Discouraged)**
+## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - (Discouraged)
 
 **If you implement `/trades` you do not need to implement `/trades-by-timestamp`.**
 
@@ -203,7 +203,7 @@ This endpoint is provided to maximum compatibility with exchanges that can't pag
 
 Same as `/trades`.
 
-## `/orders/snapshot` - Current Order Book Snapshot - **Required**
+## `/orders/snapshot` - Current Order Book Snapshot - **Required for A+ Verified Exchanges**
 
 **If you implement `/orders` you do not need to implement `/orders/snapshot`.**
 
