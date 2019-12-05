@@ -9,7 +9,7 @@ There are many endpoints in this spec, and not all of them are required. They ar
 - Required: This endpoint **must** be implemented in order for Nomics to integrate.
 - Preferred: This endpoint is the simplest and provides the highest quality data to Nomics.
 - Optional: While not required, this endpoint adds extra information or reduces load or latency.
-- Discouraged: This endpoint is present for maximum compatibility, but Preferred endpoints should be implemented whenever possible. **Using discouraged endpoints results in a lower transparency grade**.
+- Discouraged: This endpoint is present for maximum compatibility, but Preferred endpoints should be implemented whenever possible.
 
 ## `/info` - Exchange Information - **Required**
 
@@ -186,7 +186,7 @@ Notes:
 - The number of trades returned is up to the exchange's implementation.
 - Returning an empty array signifies there are no newer trades than the given `since` ID.
 
-## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - **Alternative to `/trades` for A+ Verified Exchanges (Discouraged)**
+## `/trades-by-timestamp` - Historical Executed Trades Paged by Timestamp - (Discouraged)
 
 **If you implement `/trades` you do not need to implement `/trades-by-timestamp`.**
 
@@ -244,7 +244,7 @@ Bids **must be sorted in descending order** and asks **must be sorted in ascendi
 
 When returning orders, perform as little aggregation as possible (ideally none) and include as many orders as possible (ideally all).
 
-## `/candles` - Candles - **Required for Grade C Integrations - Discouraged**
+## `/candles` - Candles - **Discouraged**
 
 **If you implement `/trades` you do not need to implement `/candles`.**
 
@@ -280,7 +280,7 @@ Candles are expected to include a minimum number of records for a given interval
 - `1h`: 24 candles with last candle occuring within a rolling 2 hours
 - `1m`: 60 candles with last candle occurring within a rolling 10 minutes
 
-## `/ticker` - Ticker - **Required for Grade D Integrations - Discouraged**
+## `/ticker` - Ticker - **Discouraged**
 
 **If you implement `/trades` you do not need to implement `/ticker`.**
 
