@@ -1,8 +1,12 @@
 {
     "env": {
-        "node": true
+        "node": true,
+        "es6": true
     },
-    "extends": "standard",
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
     "rules": {
         "valid-typeof": "off"
     }

@@ -4,7 +4,7 @@ const MINUTE = 1000 * 60
 const HOUR = MINUTE * 60
 const DAY = HOUR * 24
 
-function Server () {
+function Server() {
   const app = express()
 
   app.get('/', status)
@@ -20,11 +20,11 @@ function Server () {
   return app
 }
 
-function status (_, res) {
+function status(_, res) {
   res.send('OK')
 }
 
-function info (_, res) {
+function info(_, res) {
   res.send({
     description:
       'Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com. Example Exchange is an example of an exchange integration for Nomics.com.',
@@ -49,7 +49,7 @@ function info (_, res) {
   })
 }
 
-function markets (_, res) {
+function markets(_, res) {
   res.send([
     {
       id: 'btc-usd',
@@ -95,7 +95,7 @@ const allTrades = [
   }
 ]
 
-function trades (req, res) {
+function trades(req, res) {
   if (req.query.market !== 'btc-usd') {
     res.status(404).send({ error: 'unknown market' })
     return
@@ -107,7 +107,7 @@ function trades (req, res) {
   res.send(allTrades.filter(t => parseInt(t.id) > since))
 }
 
-function tradesSnapshot (req, res) {
+function tradesSnapshot(req, res) {
   if (req.query.market !== 'btc-usd') {
     res.status(404).send({ error: 'unknown market' })
     return
@@ -116,7 +116,7 @@ function tradesSnapshot (req, res) {
   res.send(allTrades)
 }
 
-function tradesByTimestamp (req, res) {
+function tradesByTimestamp(req, res) {
   if (req.query.market !== 'btc-usd') {
     res.status(404).send({ error: 'unknown market' })
     return
@@ -130,7 +130,7 @@ function tradesByTimestamp (req, res) {
   res.send(allTrades.filter(t => new Date(t.timestamp).getTime() > since.getTime()))
 }
 
-function ordersSnapshot (req, res) {
+function ordersSnapshot(req, res) {
   if (req.query.market !== 'btc-usd') {
     res.status(404).send({ error: 'unknown market' })
     return
@@ -142,7 +142,7 @@ function ordersSnapshot (req, res) {
   })
 }
 
-function candles (req, res) {
+function candles(req, res) {
   const interval = req.query.interval
 
   if (req.query.market !== 'btc-usd') {
@@ -187,13 +187,13 @@ function candles (req, res) {
   res.send(result.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1)))
 }
 
-function ticker (req, res) {
+function ticker(req, res) {
   if (req.query.market !== 'btc-usd') {
     res.status(404).send({ error: 'unknown market' })
     return
   }
 
-  trade = allTrades[allTrades.length - 1]
+  const trade = allTrades[allTrades.length - 1]
   res.send({
     close: trade.price,
     volume: trade.amount,
