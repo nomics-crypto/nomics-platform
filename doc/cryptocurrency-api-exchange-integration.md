@@ -205,8 +205,6 @@ Same as `/trades`.
 
 ## `/orders/snapshot` - Current Order Book Snapshot - **Required for A+ Verified Exchanges**
 
-**If you implement `/orders` you do not need to implement `/orders/snapshot`.**
-
 The `/orders/snapshot` endpoint returns the current order book for a given market. It allows Nomics to get a simple snapshot of open orders.
 
 ### Parameters
