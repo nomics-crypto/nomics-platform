@@ -32,7 +32,7 @@ NOMICS_PLATFORM_RELAX=1 npx nomics-platform@latest audit https://path-to-your-ap
 
 ## How do I submit my integration?
 
-Fill out the (Nomics Exchange Listing Form)[https://nomics.typeform.com/to/v1mprM] in its entirety.
+Fill out the [Nomics Exchange Listing Form](https://nomics.typeform.com/to/v1mprM) in its entirety.
 
 ## `/info` - Exchange Information - **Required**
 
