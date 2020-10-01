@@ -11,6 +11,29 @@ There are many endpoints in this spec, and not all of them are required. They ar
 - Optional: While not required, this endpoint adds extra information or reduces load or latency.
 - Discouraged: This endpoint is present for maximum compatibility, but Preferred endpoints should be implemented whenever possible.
 
+## How can I test my integration?
+
+To test your integration prior to submission, run the following auditing tool
+(requires NodeJS and NPM to be installed):
+
+
+```bash
+npx nomics-platform@latest audit https://path-to-your-api-root
+```
+
+If data functionality needs to be audited prior to all metadata being available,
+you can use the `NOMICS_PLATFORM_RELAX` environment variable to temporarily relax
+requirements for description length, logo URL, and location. This flag will also
+skip checks for markets `type` and `active` flags.
+
+```bash
+NOMICS_PLATFORM_RELAX=1 npx nomics-platform@latest audit https://path-to-your-api-root
+```
+
+## How do I submit my integration?
+
+Fill out the [Nomics Exchange Listing Form](https://nomics.typeform.com/to/v1mprM) in its entirety.
+
 ## `/info` - Exchange Information - **Required**
 
 The `/info` endpoint returns information about the exchange as a whole, and is used by Nomics to display information about your exchange to users.
