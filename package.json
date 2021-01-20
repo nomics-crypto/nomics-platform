@@ -40,7 +40,7 @@
     "express": "^4.16.3"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "teenytest": "^5.1.1",
     "teenytest-promise": "^1.0.0"
   }
