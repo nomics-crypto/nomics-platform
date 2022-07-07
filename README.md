@@ -22,4 +22,5 @@ NOMICS_PLATFORM_RELAX=1 npx nomics-platform@latest audit https://path-to-your-ap
 
 ## Nomics Integration Specifications
 
+- [Simple Ticker Integration Specification](doc/simple-ticker-integration.md)
 - [Cryptocurrency API Exchange Integration Specification](doc/cryptocurrency-api-exchange-integration.md)
