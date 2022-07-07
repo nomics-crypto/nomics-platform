@@ -6,7 +6,7 @@ This document describes the simplest method for integrating your exchange with N
 
 Your ticker can be at any valid URL that responds to an HTTP GET request and returns a JSON response.
 
-
+**Example:** https://example.com/api/nomics/ticker
 
 ### Response
 
